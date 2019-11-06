@@ -24,7 +24,4 @@ class model:
         pass
 
     def update(self):
-        if self.mainSprite.collide(self.anotherSprite):
-            print("Collision is happening")
-        # Check for collision if needed
-        pass
+        self.mainSprite.collide(self.anotherSprite, True)
