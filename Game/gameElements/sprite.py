@@ -25,9 +25,20 @@ class sprite:
 		sprite.clock = pygame.time.Clock()
 		print("Sprite initialized")
 
-	def collide(self, colideSprite):
+	def collide(self, collideSprite, restorePos = False):
                 # Returns True if collition takes place
-                return self.rect.colliderect(colideSprite.rect)
+                collide = self.rect.colliderect(collideSprite.rect)
+                if collide and restorePos:
+                        if self.moveDir == "LEFT":
+                                self.rect.x = collideSprite.rect.x + collideSprite.rect.w + 1
+                        elif self.moveDir == "RIGHT":
+                                self.rect.x = collideSprite.rect.x -1 - self.rect.w
+                        elif self.moveDir == "UP":
+                                self.rect.y = collideSprite.rect.y + collideSprite.rect.h + 1
+                        elif self.moveDir == "DOWN":
+                                self.rect.y = collideSprite.rect.y -1 - self.rect.h
+                return collide
+
 
 		
 	def loadImg(self, imgPath):
