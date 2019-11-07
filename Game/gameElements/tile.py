@@ -1,4 +1,5 @@
 from unit import *
+
 #for each type: [0]=their sprite [1]=movement cost of tile [2]=defense value of tile [3]=avoidance value of tile
 typeBridge=[" ", 1, 0, -5]
 typePlains=[" ", 1, 0, 0]
@@ -31,6 +32,12 @@ class tile:
             return True
         else:
             return False
+
+    def tileEmpty(self):
+        if self.unit is None:
+            return true
+        else:
+            return false
 
 
 #a1=tile(2)
