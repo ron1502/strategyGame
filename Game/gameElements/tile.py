@@ -28,16 +28,16 @@ class tile:
             return False
 
     def isInRange(self, rMov):
-        if(rMov-self.type[1]>=0 and self.tileEmpty()):
+        if(rMov-self.type[1]>=0 and (self.tileEmpty() or (not self.unit.isEnemy))):
             return True
         else:
             return False
 
     def tileEmpty(self):
         if self.unit is None:
-            return true
+            return True
         else:
-            return false
+            return False
 
 
 #a1=tile(2)

@@ -1,5 +1,5 @@
 import pygame
-
+from sprite import *
 class Unit:
     def __init__(self, img_name, description, hp, attack, defense, skill, speed, xp, movement):
        super(type(img_name))                     
@@ -11,6 +11,7 @@ class Unit:
        self.XP = xp
        self.Movement = movement
        self.Type = description
+       self.isEnemy=False
 
     def getX(self):
         return super.getX()
