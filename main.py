@@ -1,4 +1,4 @@
-from Game.Menu import Menu
+from Game.Menu import *
 from Game.Game import Game
 from Game.gameElements.sprite import sprite
 import os
@@ -6,8 +6,8 @@ import os
 def main():
         sprite.init(480, 480, "Best game ever")
         
-        menu = Menu()
         game = Game()
+        game_intro(480, 480, game.run)
         
         while game.model.run:
                 game.run()
