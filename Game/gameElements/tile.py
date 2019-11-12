@@ -1,4 +1,5 @@
-from unit import *
+from Game.gameElements.sprite import sprite
+
 
 #for each type: [0]=their sprite [1]=movement cost of tile [2]=defense value of tile [3]=avoidance value of tile
 typeBridge=[" ", 1, 0, -5]
@@ -15,11 +16,12 @@ typeSwitcher = {
     4: typeRiver 
 }
 
-class tile:
-    def __init__(self, tType):
-        self.type=typeSwitcher.get(tType, "nothing")
-        self.unit=None #equivalent to NULL. Refers to what unit is in the tile
-        self.inRange=0
+class tile(sprite):
+    def __init__(self, tType, x, y, w, h, unit = None):
+        super().__init__(x, y, w, h)
+        self.type = typeSwitcher.get(tType, "nothing")
+        self.unit = unit
+        self.inRange = 0
 
     def tileEmpty(self):
         if self.unit is None:
@@ -39,6 +41,23 @@ class tile:
         else:
             return False
 
+    def setUnit(self, unit):
+        self.unit = unit
+        self.locateInCenter(unit)
+
+    # Locates sprite in the center og the Tile
+    def locateInCenter(self, unit):
+        if(unit.rect.w <= self.rect.w):
+            if(unit.rect.h <= self.rect.h):
+                unit.rect.x += (self.rect.w - unit.rect.w)//2
+                unit.rect.y += (self.rect.h - unit.rect.h)//2
+                
+        # Define image scale for cases where sprite is bigger than tile
+
+    def draw(self):
+        self.drawSquare()
+        if self.unit != None:
+            self.unit.draw()
 
 #a1=tile(2)
 #a2=tile(2)

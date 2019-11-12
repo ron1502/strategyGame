@@ -1,20 +1,51 @@
-from tile import *
-from sprite import *
+from Game.gameElements.tile import tile
+from Game.gameElements.sprite import sprite
+from Game.gameElements.unit import Unit
+
+import pygame
+
 def enemiesEliminated(self):#example clear condition
     return self.enemies is 0
 clearSwitcher = {
     0: enemiesEliminated
 }
 
+
 class map(sprite):
+    GRIDCOLOR = pygame.Color(0, 0, 0)
+    
     def __init__(self, filename):
+        super().__init__(0, 0, 0, 0)
         #in final version this will probably load the file at filename and initialize all of this
         #for testing purposes I set it all manually for now
-        self.height=5
-        self.width=5
+        self.height=10
+        self.width=10
+
+        ## Grid Calculationw
+        self.rowHeight = (sprite.sHeight - 200)/self.height
+        print("Row height: " + str(self.rowHeight))
+        self.columnWidth = sprite.sWidth/self.width 
+        print("Column height: " + str(self.columnWidth))
+
+        self.tiles=[]
+        ## Tile initialization
+        for i in range(self.height):
+            yPos = (self.rowHeight * i) + 200
+            newRow = []
+            for j in range(self.width):
+                xPos = (self.columnWidth * j)
+                newRow.append(tile(1, xPos, yPos, self.columnWidth, self.rowHeight))
+            self.tiles.append(newRow)
+
+        ## Adding units to Tiles
+        yPos = (self.rowHeight * 2) + 200
+        xPos = (self.columnWidth * 4)
+        newUnit = Unit(xPos, yPos, 50, 50, r"\resources\sprites\link.png", "OK BOOMER", 100, 100, 100, 100, 100, 100, 100)
+        self.tiles[2][2].setUnit(newUnit)
+        print(str(self.tiles[2][2].unit))
+            
         self.enemies=0
         self.clearCondition=0
-        self.tiles=[[]]
         self.turn=1 #it's 1 when player's turn 2 when enemy's turn.
         self.rangeTable=[0]*self.width
         for i in range(self.width):
@@ -56,8 +87,23 @@ class map(sprite):
         self.rangeTable=[0]*self.width
         for i in range(self.width):
             self.rangeTable[i]=[0]*self.height
+
+    def draw(self):
+        for i in range(self.height):
+            for j in range(self.width):
+                self.tiles[i][j].draw()
+        for rowNum in range(0, self.height + 1):
+            yLinePos = (self.rowHeight * rowNum) + 200
+            pygame.draw.line(sprite.screen, map.GRIDCOLOR, (0, yLinePos), (sprite.sWidth, yLinePos))
+        for colNum in range(0, self.width + 1):
+            xLinePos = self.columnWidth * colNum
+            pygame.draw.line(sprite.screen, map.GRIDCOLOR, (xLinePos, 200), (xLinePos, 720))
+
+
+
             
-        
+            
+"""      
 a=map("level1.txt") #note that you have to manually set the height and width in the constructor right now
 #if you don't do this rangeTable will not be correctly declared in the initializor
 #this will not be a problem in the final version as height and width will be read from a file before setting up rangeTable
@@ -79,9 +125,10 @@ print("")
 for i in range(5):
     print(a.rangeTable[i])
 
-        
+**/        
 #a=map("level1.txt")
 #a.enemies=1
 #print(a.isClear())
 #a.enemies-=1
 #print(a.isClear())
+"""

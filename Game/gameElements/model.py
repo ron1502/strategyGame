@@ -1,15 +1,15 @@
 import json
 from Game.gameElements.sprite import sprite
+from  Game.gameElements.map import map
 
 class model:
     def __init__(self):
         self.sprites = []
         self.run = True
         # Sprite for collision and event testing
-        self.mainSprite = sprite(10, 10, 50, 50, r"\resources\sprites\link.png")
-        self.anotherSprite =  sprite (100, 100, 20, 20)
-        self.addSprite(self.mainSprite)
-        self.addSprite(self.anotherSprite)
+        self.map = map("")
+        self.addSprite(self.map)
+        
 
     def addSprite(self, sprite):
         self.sprites.append(sprite)
@@ -24,4 +24,4 @@ class model:
         pass
 
     def update(self):
-        self.mainSprite.collide(self.anotherSprite, True)
+        pass

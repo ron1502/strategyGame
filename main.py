@@ -4,10 +4,12 @@ from Game.gameElements.sprite import sprite
 import os
 
 def main():
-        sprite.init(480, 480, "Best game ever")
-        
+        # Eliminate Duplicate operations
+        sprite.init(1080, 720, "Best game ever")
+
+        print("Initializing game")
         game = Game()
-        game_intro(480, 480, game.run)
+        game_intro(1080, 720, game.run)
         
         while game.model.run:
                 game.run()

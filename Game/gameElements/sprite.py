@@ -5,6 +5,8 @@ import random
 class sprite:
 	screen = None
 	clock = None
+	sWidth = 0
+	sHeight = 0
 	
 	def __init__(self, x, y, w, h, sprtPath = None):
 		self.rect = pygame.Rect(x, y, w, h)
@@ -15,13 +17,16 @@ class sprite:
 					       random.randint(0, 255))
 		#-----------------------------------------------
 		if(sprtPath != None): self.loadImg(sprtPath)
-		print("I'm alive")
 	
 	@staticmethod
 	def init(width, height, caption):
 		pygame.init()
+		print("Sprite init")
 		sprite.screen = pygame.display.set_mode((width,height))
+		print("Sprite in sprite " + str(sprite.screen))
 		pygame.display.set_caption(caption)
+		sprite.sHeight = height
+		sprite.sWidth = width
 		sprite.clock = pygame.time.Clock()
 		print("Sprite initialized")
 
@@ -60,3 +65,6 @@ class sprite:
 
 	def drawImg(self):
 		sprite.screen.blit(self.img, self.rect)
+		
+	def draw(self):
+                pass
