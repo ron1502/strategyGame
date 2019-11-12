@@ -43,22 +43,20 @@ class tile(sprite):
 
     def setUnit(self, unit):
         self.unit = unit
-        self.locateInCenter(unit)
+        self.locateInCenter()
 
     # Locates sprite in the center og the Tile
-    def locateInCenter(self, unit):
-        if(unit.rect.w <= self.rect.w):
-            if(unit.rect.h <= self.rect.h):
-                unit.rect.x += (self.rect.w - unit.rect.w)//2
-                unit.rect.y += (self.rect.h - unit.rect.h)//2
-                
+    def locateInCenter(self):
+        if(self.unit.rect.w <= self.rect.w):
+            if(self.unit.rect.h <= self.rect.h):
+                self.unit.rect.x += (self.rect.w - self.unit.rect.w)//2
+                self.unit.rect.y += (self.rect.h - self.unit.rect.h)//2
         # Define image scale for cases where sprite is bigger than tile
 
     def draw(self):
         self.drawSquare()
         if self.unit != None:
             self.unit.draw()
-
 #a1=tile(2)
 #a2=tile(2)
 #a2.unit="John Smith"

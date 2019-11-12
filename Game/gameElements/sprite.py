@@ -31,24 +31,24 @@ class sprite:
 		print("Sprite initialized")
 
 	def collide(self, collideSprite, restorePos = False):
-                # Returns True if collition takes place
-                collide = self.rect.colliderect(collideSprite.rect)
-                if collide and restorePos:
-                        if self.moveDir == "LEFT":
-                                self.rect.x = collideSprite.rect.x + collideSprite.rect.w + 1
-                        elif self.moveDir == "RIGHT":
-                                self.rect.x = collideSprite.rect.x -1 - self.rect.w
-                        elif self.moveDir == "UP":
-                                self.rect.y = collideSprite.rect.y + collideSprite.rect.h + 1
-                        elif self.moveDir == "DOWN":
-                                self.rect.y = collideSprite.rect.y -1 - self.rect.h
-                return collide
+		# Returns True if collition takes place
+		collide = self.rect.colliderect(collideSprite.rect)
+		if collide and restorePos:
+			if self.moveDir == "LEFT":
+				self.rect.x = collideSprite.rect.x + collideSprite.rect.w + 1
+			elif self.moveDir == "RIGHT":
+				self.rect.x = collideSprite.rect.x -1 - self.rect.w
+			elif self.moveDir == "UP":
+				self.rect.y = collideSprite.rect.y + collideSprite.rect.h + 1
+			elif self.moveDir == "DOWN":
+				self.rect.y = collideSprite.rect.y -1 - self.rect.h
+		return collide
 
 
 		
 	def loadImg(self, imgPath):
-                # Turns image path into an absolute path using the current working directory
-                # Loads image and rescale using the dimension defined in self.rect
+		# Turns image path into an absolute path using the current working directory
+		# Loads image and rescale using the dimension defined in self.rect
 		imgPath = os.getcwd() + imgPath
 		self.img = pygame.image.load(imgPath).convert()
 		self.img = pygame.transform.scale(self.img, (self.rect.w, self.rect.h))
@@ -67,4 +67,7 @@ class sprite:
 		sprite.screen.blit(self.img, self.rect)
 		
 	def draw(self):
-                pass
+		self.drawImg()
+	
+	def printData(self):
+		print("SpriteData: \nX: " + str(self.rect.x) + "\nY: " + str(self.rect.y) + "\nW:" + str(self.rect.w) + "\nH: " + str(self.rect.w))

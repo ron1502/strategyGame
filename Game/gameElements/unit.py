@@ -27,8 +27,6 @@ class Unit(sprite):
     def setY(self, y):      
         return super.setY(y)     
 
-    def draw(self):
-        self.drawImg()
 
 # -------------------------------------
 # Main

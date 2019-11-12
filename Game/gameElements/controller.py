@@ -13,6 +13,7 @@ class controller:
             if event.type == pygame.QUIT:
                 self.model.run = False
             elif event.type == pygame.KEYDOWN:
+                # Unit movement
                 if event.key == pygame.K_w:
                     self.model.mainSprite.rect. y-= 10
                     self.model.mainSprite.moveDir = "UP"

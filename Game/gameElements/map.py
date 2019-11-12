@@ -41,8 +41,8 @@ class map(sprite):
         yPos = (self.rowHeight * 2) + 200
         xPos = (self.columnWidth * 4)
         newUnit = Unit(xPos, yPos, 50, 50, r"\resources\sprites\link.png", "OK BOOMER", 100, 100, 100, 100, 100, 100, 100)
-        self.tiles[2][2].setUnit(newUnit)
-        print(str(self.tiles[2][2].unit))
+        self.tiles[2][4].setUnit(newUnit)
+        print(str(self.tiles[2][4].unit))
             
         self.enemies=0
         self.clearCondition=0
