@@ -17,7 +17,7 @@ typeSwitcher = {
 }
 
 class tile(sprite):
-    def __init__(self, tType, x, y, w, h, unit = None):
+    def __init__(self, tType, x, y, w = 50, h = 50, unit = None):
         super().__init__(x, y, w, h)
         self.type = typeSwitcher.get(tType, "nothing")
         self.unit = unit
