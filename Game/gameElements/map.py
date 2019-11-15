@@ -14,32 +14,37 @@ clearSwitcher = {
 class map(sprite):
     GRIDCOLOR = pygame.Color(0, 0, 0)
     
+    #Grid dimensions
+    GHEIGHT = 50
+    GWIDTH = 50
+    
+    #Number of rows and Columns
+    ROWCOUNT = 10
+    COLUMNCOUNT = 10
+
+    #Map Margin
+    TOPMARGIN = 110
+    LEFTMARGIN = 100
+    
     def __init__(self, filename):
         super().__init__(0, 0, 0, 0)
-        #in final version this will probably load the file at filename and initialize all of this
-        #for testing purposes I set it all manually for now
-        self.height=10
-        self.width=10
-
-        ## Grid Calculationw
-        self.rowHeight = (sprite.sHeight - 200)/self.height
-        print("Row height: " + str(self.rowHeight))
-        self.columnWidth = sprite.sWidth/self.width 
-        print("Column height: " + str(self.columnWidth))
 
         self.tiles=[]
-        ## Tile initialization
-        for i in range(self.height):
-            yPos = (self.rowHeight * i) + 200
+        
+        ## Tile initialization (Can be used for the initialization of tiles in from  jsonData)
+        # In that case map dimension can be access with no problem through map
+        
+        for i in range(map.ROWCOUNT):
+            yPos = (map.GHEIGHT * i) + map.TOPMARGIN
             newRow = []
-            for j in range(self.width):
-                xPos = (self.columnWidth * j)
-                newRow.append(tile(1, xPos, yPos, self.columnWidth, self.rowHeight))
+            for j in range(map.COLUMNCOUNT):
+                xPos = (map.GWIDTH * j) + map.LEFTMARGIN
+                newRow.append(tile(1, xPos, yPos))
             self.tiles.append(newRow)
 
         ## Adding units to Tiles
-        yPos = (self.rowHeight * 2) + 200
-        xPos = (self.columnWidth * 4)
+        yPos = (self.GHEIGHT * 2) + map.TOPMARGIN
+        xPos = (self.GWIDTH * 4) + map.LEFTMARGIN
         newUnit = Unit(xPos, yPos, 50, 50, r"\resources\sprites\link.png", "OK BOOMER", 100, 100, 100, 100, 100, 100, 100)
         self.tiles[2][4].setUnit(newUnit)
         print(str(self.tiles[2][4].unit))
@@ -47,9 +52,9 @@ class map(sprite):
         self.enemies=0
         self.clearCondition=0
         self.turn=1 #it's 1 when player's turn 2 when enemy's turn.
-        self.rangeTable=[0]*self.width
-        for i in range(self.width):
-            self.rangeTable[i]=[0]*self.height
+        self.rangeTable=[0]* map.ROWCOUNT
+        for i in range(map.ROWCOUNT):
+            self.rangeTable[i]=[0]*map.COLUMNCOUNT
         #print(self.rangeTable)
 
     def render(self):
@@ -88,16 +93,27 @@ class map(sprite):
         for i in range(self.width):
             self.rangeTable[i]=[0]*self.height
 
-    def draw(self):
-        for i in range(self.height):
-            for j in range(self.width):
+    def drawGridLines(self):
+        yLimit = map.GHEIGHT * map.ROWCOUNT + map.TOPMARGIN
+        xLimit = map.GWIDTH * map.COLUMNCOUNT + map.LEFTMARGIN
+        for rowNum in range(map.ROWCOUNT + 1):
+            yLinePos = map.GHEIGHT * rowNum + map.TOPMARGIN
+            pygame.draw.line(sprite.screen, map.GRIDCOLOR, (map.LEFTMARGIN, yLinePos), (xLimit, yLinePos))
+        for colNum in range(map.COLUMNCOUNT + 1):
+            xLinePos = map.GWIDTH * colNum + map.LEFTMARGIN
+            pygame.draw.line(sprite.screen, map.GRIDCOLOR, (xLinePos,  map.TOPMARGIN), (xLinePos, yLimit))
+
+    def drawTileContent(self):
+        for i in range(map.ROWCOUNT):
+            for j in range(map.COLUMNCOUNT):
                 self.tiles[i][j].draw()
-        for rowNum in range(0, self.height + 1):
-            yLinePos = (self.rowHeight * rowNum) + 200
-            pygame.draw.line(sprite.screen, map.GRIDCOLOR, (0, yLinePos), (sprite.sWidth, yLinePos))
-        for colNum in range(0, self.width + 1):
-            xLinePos = self.columnWidth * colNum
-            pygame.draw.line(sprite.screen, map.GRIDCOLOR, (xLinePos, 200), (xLinePos, 720))
+                
+    def draw(self):
+        self.drawTileContent()
+        self.drawGridLines()
+
+        
+
 
 
 
