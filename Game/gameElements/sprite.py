@@ -8,13 +8,11 @@ class sprite:
 	sWidth = 0
 	sHeight = 0
 	
-	def __init__(self, x, y, w, h, sprtPath = None):
+	def __init__(self, x, y, w, h, sprtPath = None, color = None):
 		self.rect = pygame.Rect(x, y, w, h)
 		#------------------------------------------------
-		# TE: Rectangle color to simulate sprite
-		self.rectColor = pygame.Color(random.randint(0, 255),
-					       random.randint(0, 255),
-					       random.randint(0, 255))
+		# RECTANGLE COLOR = GREEN BY DEFAULT
+		if(color == None): self.rectColor = pygame.Color(95, 111, 58)
 		#-----------------------------------------------
 		if(sprtPath != None): self.loadImg(sprtPath)
 	
@@ -50,18 +48,21 @@ class sprite:
 		# Turns image path into an absolute path using the current working directory
 		# Loads image and rescale using the dimension defined in self.rect
 		imgPath = os.getcwd() + imgPath
-		self.img = pygame.image.load(imgPath).convert()
+		self.img = pygame.image.load(imgPath).convert_alpha()
 		self.img = pygame.transform.scale(self.img, (self.rect.w, self.rect.h))
 	
 	def getX(self):
 		return self.rect.x
+
+	def mouseInIt(self, x, y):
+                return self.rect.collidepoint(x,y)
 	
 	def getY(self):
 		return self.y
 
-	def drawSquare(self, color = None):
+	def drawSquare(self, color = None, width = 0):
 		if color == None: color = self.rectColor 
-		pygame.draw.rect(sprite.screen, color, self.rect)
+		pygame.draw.rect(sprite.screen, color, self.rect, width)
 
 	def drawImg(self):
 		sprite.screen.blit(self.img, self.rect)
