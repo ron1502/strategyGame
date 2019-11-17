@@ -1,4 +1,5 @@
 from Game.gameElements.sprite import sprite
+import pygame
 
 
 #for each type: [0]=their sprite [1]=movement cost of tile [2]=defense value of tile [3]=avoidance value of tile
@@ -17,11 +18,19 @@ typeSwitcher = {
 }
 
 class tile(sprite):
-    def __init__(self, tType, x, y, w = 50, h = 50, unit = None):
+
+    BGCOLOR = pygame.Color(95, 111, 58)
+    SBGCOLOR = pygame.Color(144, 159, 67)
+    
+    def __init__(self, tType, x, y, w = 60, h = 60, unit = None):
         super().__init__(x, y, w, h)
         self.type = typeSwitcher.get(tType, "nothing")
         self.unit = unit
         self.inRange = 0
+
+        #controlls animation of tile
+        self.selected = False
+        self.animation = 0
 
     def tileEmpty(self):
         if self.unit is None:
@@ -44,7 +53,8 @@ class tile(sprite):
     def setUnit(self, unit):
         self.unit = unit
         self.locateInCenter()
-
+            
+        
     # Locates sprite in the center og the Tile
     def locateInCenter(self):
         if(self.unit.rect.w <= self.rect.w):
@@ -54,9 +64,21 @@ class tile(sprite):
         # Define image scale for cases where sprite is bigger than tile
 
     def draw(self):
+        self.update()
         self.drawSquare()
         if self.unit != None:
             self.unit.draw()
+
+    def update(self):
+        if(self.selected):
+            if(self.animation < 32):
+                self.animation += 1
+                self.rectColor =  tile.SBGCOLOR
+            elif(self.animation < 64):
+                self.animation += 1
+                self.rectColor = tile.BGCOLOR
+            else:
+                self.animation = 0
 #a1=tile(2)
 #a2=tile(2)
 #a2.unit="John Smith"
