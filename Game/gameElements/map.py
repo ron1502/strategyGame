@@ -15,16 +15,16 @@ class map(sprite):
     GRIDCOLOR = pygame.Color(0, 0, 0)
     
     #Grid dimensions
-    GHEIGHT = 50
-    GWIDTH = 50
+    GHEIGHT = 70
+    GWIDTH = 70
     
     #Number of rows and Columns
     ROWCOUNT = 10
     COLUMNCOUNT = 10
 
     #Map Margin
-    TOPMARGIN = 110
-    LEFTMARGIN = 100
+    TOPMARGIN = 10
+    LEFTMARGIN = 65
     
     def __init__(self, filename):
         super().__init__(0, 0, 0, 0)
@@ -39,7 +39,7 @@ class map(sprite):
             newRow = []
             for j in range(map.COLUMNCOUNT):
                 xPos = (map.GWIDTH * j) + map.LEFTMARGIN
-                newRow.append(tile(1, xPos, yPos))
+                newRow.append(tile(1, xPos, yPos, map.GWIDTH, map.GHEIGHT))
             self.tiles.append(newRow)
 
         ## Adding units to Tiles
@@ -103,11 +103,19 @@ class map(sprite):
             xLinePos = map.GWIDTH * colNum + map.LEFTMARGIN
             pygame.draw.line(sprite.screen, map.GRIDCOLOR, (xLinePos,  map.TOPMARGIN), (xLinePos, yLimit))
 
+    ## Can become part of model depending of out needs  ##
     def drawTileContent(self):
         for i in range(map.ROWCOUNT):
             for j in range(map.COLUMNCOUNT):
                 self.tiles[i][j].draw()
-                
+
+    def getSelectedTile(self, x, y):
+        for row in self.tiles:
+            for tile in row:
+                if(tile.mouseInIt(x, y)): return tile
+        return None
+
+    #######################################################
     def draw(self):
         self.drawTileContent()
         self.drawGridLines()
