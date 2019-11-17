@@ -27,7 +27,7 @@ class controller:
                     self.model.mainSprite.rect.x += 10
                     self.model.mainSprite.moveDir = "RIGHT"
             elif event.type == pygame.MOUSEBUTTONUP:
-                print("Detect source or destiny tile using event.pos")
+                self.model.checkClick(event.pos[0], event.pos[1])
                 #if model.tiles.objectToMove == none:
 		    #model.tiles.setObjectToMove(pos(x,y))
 		#elif model.tiles.moveObject(pos(x,y)):
