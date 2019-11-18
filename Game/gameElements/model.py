@@ -57,9 +57,12 @@ class model:
             elif(self.tileControlledUnit != None and self.unitMenu.action == "W"):
                 #Hong: Check if unit can move to selected tile
                 #Moving to tile
-                self.selectedTile.unit = self.tileControlledUnit.unit
+                print("Setting Unit")
+                self.selectedTile.setUnit(self.tileControlledUnit.unit)
+                print("Unit succesfully set")
                 self.tileControlledUnit.selected = False
                 self.tileControlledUnit.unit = None
+                self.tileControlledUnit = None
                 
 
     def loadGame(self):
