@@ -55,8 +55,11 @@ class tile(sprite):
         self.locateInCenter()
             
         
-    # Locates sprite in the center og the Tile
+    # Locates sprite in the center of the Tile
+    # Gives x and y possition to unit based tile position
     def locateInCenter(self):
+        self.unit.rect.x = self.rect.x
+        self.unit.rect.y = self.rect.y
         if(self.unit.rect.w <= self.rect.w):
             if(self.unit.rect.h <= self.rect.h):
                 self.unit.rect.x += (self.rect.w - self.unit.rect.w)//2
@@ -79,6 +82,9 @@ class tile(sprite):
                 self.rectColor = tile.BGCOLOR
             else:
                 self.animation = 0
+        else:
+            self.rectColor = tile.BGCOLOR
+
 #a1=tile(2)
 #a2=tile(2)
 #a2.unit="John Smith"
