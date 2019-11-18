@@ -1,4 +1,4 @@
-from Game.Menu import *
+from Game.menuElements.Menu import *
 from Game.Game import Game
 from Game.gameElements.sprite import sprite
 import os
