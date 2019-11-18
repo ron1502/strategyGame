@@ -42,10 +42,8 @@ class map(sprite):
                 newRow.append(tile(1, xPos, yPos, map.GWIDTH, map.GHEIGHT))
             self.tiles.append(newRow)
 
-        ## Adding units to Tiles
-        yPos = (self.GHEIGHT * 2) + map.TOPMARGIN
-        xPos = (self.GWIDTH * 4) + map.LEFTMARGIN
-        newUnit = Unit(xPos, yPos, 50, 50, r"\resources\sprites\link.png", "OK BOOMER", 100, 100, 100, 100, 100, 100, 100)
+        ## Adding testing units to Tiles
+        newUnit = Unit(0, 0, 50, 50, r"\resources\sprites\link.png", "OK BOOMER", 100, 100, 100, 100, 100, 100, 100)
         self.tiles[2][4].setUnit(newUnit)
         print(str(self.tiles[2][4].unit))
             
