@@ -15,17 +15,9 @@ class controller:
             elif event.type == pygame.KEYDOWN:
                 # Unit movement
                 if event.key == pygame.K_w:
-                    self.model.mainSprite.rect. y-= 10
-                    self.model.mainSprite.moveDir = "UP"
                 elif event.key == pygame.K_s:
-                    self.model.mainSprite.rect.y += 10
-                    self.model.mainSprite.moveDir = "DOWN"
                 elif event.key == pygame.K_a:
-                    self.model.mainSprite.rect.x -= 10
-                    self.model.mainSprite.moveDir = "LEFT"
                 elif event.key == pygame.K_d:
-                    self.model.mainSprite.rect.x += 10
-                    self.model.mainSprite.moveDir = "RIGHT"
             elif event.type == pygame.MOUSEBUTTONUP:
                 self.model.checkClick(event.pos[0], event.pos[1])
                 #if model.tiles.objectToMove == none:
