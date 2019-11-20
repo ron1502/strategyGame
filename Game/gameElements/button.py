@@ -2,7 +2,7 @@ import pygame
 from Game.gameElements.sprite import sprite
 
 class button(sprite):
-    TEXTSIZE = {"S": pygame.font.SysFont('Berlin Sans FB', 20)}
+    TEXTSIZE = None
     TEXTCOLOR = pygame.Color(255, 255, 255)
     UTEXTCOLOR = pygame.Color(168, 168, 168)
     
@@ -15,7 +15,7 @@ class button(sprite):
     
     def __init__(self, x, y, w, size, text, clickFunct, color = None):
         super().__init__(x + button.BUTTONMARGIN//2, y, w - button.BUTTONMARGIN, 0)
-
+        if(button.TEXTSIZE == None): button.TEXTSIZE = {"S": pygame.font.SysFont('Berlin Sans FB', 20)}
         self.text = self.aText = button.TEXTSIZE[size].render(text, True, button.TEXTCOLOR)
         self.uText = button.TEXTSIZE[size].render(text, True, button.UTEXTCOLOR)
         self.textRect = self.aText.get_rect()
