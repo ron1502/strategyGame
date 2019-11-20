@@ -54,7 +54,7 @@ class map(sprite):
             self.rangeTable[i]=[0]*map.COLUMNCOUNT
 
         self.atkRangeTable=[0] * map.ROWCOUNT
-        for i in range(self.width):
+        for i in range(map.COLUMNCOUNT):
             self.atkRangeTable[i]=[0]*map.COLUMNCOUNT
 
     def render(self):
@@ -74,7 +74,7 @@ class map(sprite):
             if not(self.tiles[x-atkRange][y].tileEmpty()):
                 if (self.tiles[x-atkRange][y].unit.isEnemy):
                     self.atkRangeTable[x-atkRange][y]=1
-        if (x+atkRange)<self.height:
+        if (x+atkRange)<map.ROWCOUNT:
             if not(self.tiles[x+atkRange][y].tileEmpty()):
                 if (self.tiles[x+atkRange][y].unit.isEnemy):
                     self.atkRangeTable[x+atkRange][y]=1
@@ -82,7 +82,7 @@ class map(sprite):
             if not(self.tiles[x][y-atkRange].tileEmpty()):
                 if (self.tiles[x][y-atkRange].unit.isEnemy):
                     self.atkRangeTable[x][y-atkRange]=1
-        if (y+atkRange)<self.width:
+        if (y+atkRange)<map.COLUMNCOUNT:
             if not(self.tiles[x][y+atkRange].tileEmpty()):
                 if (self.tiles[x][y+atkRange].unit.isEnemy):
                     self.atkRangeTable[x][y+atkRange]=1
@@ -93,7 +93,7 @@ class map(sprite):
                 self.constructRangeTable(x-1, y, nMOV)
                 '''recursively there is no difference between moving one
                 space, and being in that space from the start with [movement cost] less movement points'''
-        if x+1<self.height:
+        if x+1<map.ROWCOUNT:
             if self.tiles[x+1][y].isInRange(MOV):
                 nMOV=MOV-self.tiles[x+1][y].type[1]
                 self.constructRangeTable(x+1, y, nMOV)
@@ -101,7 +101,7 @@ class map(sprite):
             if self.tiles[x][y-1].isInRange(MOV):
                 nMOV=MOV-self.tiles[x][y-1].type[1]
                 self.constructRangeTable(x, y-1, nMOV)
-        if y+1<self.width:
+        if y+1<map.COLUMNCOUNT:
             if self.tiles[x][y+1].isInRange(MOV):
                 nMOV=MOV-self.tiles[x][y+1].type[1]
                 self.constructRangeTable(x, y+1, nMOV)
@@ -114,7 +114,7 @@ class map(sprite):
             if not(self.tiles[x-atkRange][y].tileEmpty()):
                 if not(self.tiles[x-atkRange][y].unit.isEnemy):
                     self.atkRangeTable[x-atkRange][y]=1
-        if (x+atkRange)<self.height:
+        if (x+atkRange)<map.ROWCOUNT:
             if not(self.tiles[x+atkRange][y].tileEmpty()):
                 if not(self.tiles[x+atkRange][y].unit.isEnemy):
                     self.atkRangeTable[x+atkRange][y]=1
@@ -122,7 +122,7 @@ class map(sprite):
             if not(self.tiles[x][y-atkRange].tileEmpty()):
                 if not(self.tiles[x][y-atkRange].unit.isEnemy):
                     self.atkRangeTable[x][y-atkRange]=1
-        if (y+atkRange)<self.width:
+        if (y+atkRange)<map.COLUMNCOUNT:
             if not(self.tiles[x][y+atkRange].tileEmpty()):
                 if not(self.tiles[x][y+atkRange].unit.isEnemy):
                     self.atkRangeTable[x][y+atkRange]=1
@@ -133,7 +133,7 @@ class map(sprite):
                 self.constructEnemyRangeTable(x-1, y, nMOV, 1)
                 '''recursively there is no difference between moving one
                 space, and being in that space from the start with [movement cost] less movement points'''
-        if x+1<self.height:
+        if x+1<map.ROWCOUNT:
             if self.tiles[x+1][y].isInRangeEnemy(MOV):
                 nMOV=MOV-self.tiles[x+1][y].type[1]
                 self.constructEnemyRangeTable(x+1, y, nMOV, 1)
@@ -141,16 +141,16 @@ class map(sprite):
             if self.tiles[x][y-1].isInRangeEnemy(MOV):
                 nMOV=MOV-self.tiles[x][y-1].type[1]
                 self.constructEnemyRangeTable(x, y-1, nMOV, 1)
-        if y+1<self.width:
+        if y+1<map.COLUMNCOUNT:
             if self.tiles[x][y+1].isInRangeEnemy(MOV):
                 nMOV=MOV-self.tiles[x][y+1].type[1]
                 self.constructEnemyRangeTable(x, y+1, nMOV, 1)
     
 
     def clearRangeTables(self):
-        self.rangeTable=[0]*self.width
-        for i in range(self.width):
-            self.rangeTable[i]=[0]*self.height
+        self.rangeTable=[0]*map.COLUMNCOUNT
+        for i in range(map.COLUMNCOUNT):
+            self.rangeTable[i]=[0]*map.ROWCOUNT
 
     def drawGridLines(self):
         yLimit = map.GHEIGHT * map.ROWCOUNT + map.TOPMARGIN
