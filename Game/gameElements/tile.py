@@ -33,10 +33,7 @@ class tile(sprite):
         self.animation = 0
 
     def tileEmpty(self):
-        if self.unit is None:
-            return True
-        else:
-            return False
+        return self.unit is None
 
     def isInRange(self, rMov):
         if(rMov-self.type[1]>=0 and (self.tileEmpty() or (not self.unit.isEnemy))):
@@ -44,8 +41,8 @@ class tile(sprite):
         else:
             return False
 
-    def tileEmpty(self):
-        if self.unit is None:
+    def isInRangeEnemy(self, rMov):
+        if(rMov-self.type[1]>=0 and (self.tileEmpty() or (self.unit.isEnemy))):
             return True
         else:
             return False
@@ -84,7 +81,6 @@ class tile(sprite):
                 self.animation = 0
         else:
             self.rectColor = tile.BGCOLOR
-
 #a1=tile(2)
 #a2=tile(2)
 #a2.unit="John Smith"
