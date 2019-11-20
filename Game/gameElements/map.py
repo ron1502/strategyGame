@@ -1,29 +1,61 @@
-from tile import *
-from sprite import *
+from Game.gameElements.tile import tile
+from Game.gameElements.sprite import sprite
+from Game.gameElements.unit import Unit
+
+import pygame
+
 def enemiesEliminated(self):#example clear condition
     return self.enemies is 0
 clearSwitcher = {
     0: enemiesEliminated
 }
 
-#class map():
 class map(sprite):
+    GRIDCOLOR = pygame.Color(0, 0, 0)
+    
+    #Grid dimensions
+    GHEIGHT = 70
+    GWIDTH = 70
+    
+    #Number of rows and Columns
+    ROWCOUNT = 10
+    COLUMNCOUNT = 10
+
+    #Map Margin
+    TOPMARGIN = 10
+    LEFTMARGIN = 65
+    
     def __init__(self, filename):
-        #in final version this will probably load the file at filename and initialize all of this
-        #for testing purposes I set it all manually for now
-        self.height=5
-        self.width=5
+        super().__init__(0, 0, 0, 0)
+
+        self.tiles=[]
+        
+        ## Tile initialization (Can be used for the initialization of tiles in from  jsonData)
+        # In that case map dimension can be access with no problem through map
+        
+        for i in range(map.ROWCOUNT):
+            yPos = (map.GHEIGHT * i) + map.TOPMARGIN
+            newRow = []
+            for j in range(map.COLUMNCOUNT):
+                xPos = (map.GWIDTH * j) + map.LEFTMARGIN
+                newRow.append(tile(1, xPos, yPos, map.GWIDTH, map.GHEIGHT))
+            self.tiles.append(newRow)
+
+        ## Adding testing units to Tiles
+        newUnit = Unit(0, 0, 50, 50, r"\resources\sprites\link.png", "OK BOOMER", 100, 100, 100, 100, 100, 100, 100)
+        self.tiles[2][4].setUnit(newUnit)
+        print(str(self.tiles[2][4].unit))
+            
         self.enemies=0
         self.clearCondition=0
-        self.tiles=[[]]
         self.turn=1 #it's 1 when player's turn 2 when enemy's turn.
-        self.rangeTable=[0]*self.width
-        for i in range(self.width):
-            self.rangeTable[i]=[0]*self.height
+        self.rangeTable=[0] * map.ROWCOUNT
+        for i in range(map.ROWCOUNT):
+            self.rangeTable[i]=[0]*map.COLUMNCOUNT
 
-        self.atkRangeTable=[0]*self.width
+        self.atkRangeTable=[0] * map.ROWCOUNT
         for i in range(self.width):
-            self.atkRangeTable[i]=[0]*self.height
+            self.atkRangeTable[i]=[0]*map.COLUMNCOUNT
 
     def render(self):
         pass
@@ -119,9 +151,33 @@ class map(sprite):
         self.rangeTable=[0]*self.width
         for i in range(self.width):
             self.rangeTable[i]=[0]*self.height
-        self.atkRangeTable=[0]*self.width
-        for i in range(self.width):
-            self.atkRangeTable[i]=[0]*self.height
+
+    def drawGridLines(self):
+        yLimit = map.GHEIGHT * map.ROWCOUNT + map.TOPMARGIN
+        xLimit = map.GWIDTH * map.COLUMNCOUNT + map.LEFTMARGIN
+        for rowNum in range(map.ROWCOUNT + 1):
+            yLinePos = map.GHEIGHT * rowNum + map.TOPMARGIN
+            pygame.draw.line(sprite.screen, map.GRIDCOLOR, (map.LEFTMARGIN, yLinePos), (xLimit, yLinePos))
+        for colNum in range(map.COLUMNCOUNT + 1):
+            xLinePos = map.GWIDTH * colNum + map.LEFTMARGIN
+            pygame.draw.line(sprite.screen, map.GRIDCOLOR, (xLinePos,  map.TOPMARGIN), (xLinePos, yLimit))
+
+    ## Can become part of model depending of out needs  ##
+    def drawTileContent(self):
+        for i in range(map.ROWCOUNT):
+            for j in range(map.COLUMNCOUNT):
+                self.tiles[i][j].draw()
+
+    def getSelectedTile(self, x, y):
+        for row in self.tiles:
+            for tile in row:
+                if(tile.mouseInIt(x, y)): return tile
+        return None
+
+    #######################################################
+    def draw(self):
+        self.drawTileContent()
+        self.drawGridLines()
 
     def selectUnitToMove(self, origX, origY): #some states and variables may need to be set in the controller during this process, I don't know
         if (not(tiles[origX][origY].tileEmpty()) and not(tiles[origX][origY].unit.isEnemy)):
@@ -177,3 +233,4 @@ a.clearRangeTables()
 #print(a.isClear())
 #a.enemies-=1
 #print(a.isClear())'''
+
