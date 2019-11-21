@@ -11,25 +11,16 @@ class controller:
 	## If diagonals movements desired, pygamey.key.get_pressed() tuple can be used instead
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.model.run = False
+                self.model.quitGame()
             elif event.type == pygame.KEYDOWN:
+                # Unit movement
                 if event.key == pygame.K_w:
-                    self.model.mainSprite.rect. y-= 10
-                    self.model.mainSprite.moveDir = "UP"
+                    pass
                 elif event.key == pygame.K_s:
-                    self.model.mainSprite.rect.y += 10
-                    self.model.mainSprite.moveDir = "DOWN"
+                    pass
                 elif event.key == pygame.K_a:
-                    self.model.mainSprite.rect.x -= 10
-                    self.model.mainSprite.moveDir = "LEFT"
+                    pass
                 elif event.key == pygame.K_d:
-                    self.model.mainSprite.rect.x += 10
-                    self.model.mainSprite.moveDir = "RIGHT"
+                    pass
             elif event.type == pygame.MOUSEBUTTONUP:
-                print("Detect source or destiny tile using event.pos")
-                #if model.tiles.objectToMove == none:
-		    #model.tiles.setObjectToMove(pos(x,y))
-		#elif model.tiles.moveObject(pos(x,y)):
-		    #model.tiles.objectMoved()
-		#else
-		    #print("Object can't be moved to this tile")
+                self.model.checkClick(event.pos[0], event.pos[1])

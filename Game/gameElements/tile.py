@@ -1,4 +1,6 @@
-from unit import *
+from Game.gameElements.sprite import sprite
+import pygame
+
 
 #for each type: [0]=their sprite [1]=movement cost of tile [2]=defense value of tile [3]=avoidance value of tile
 typeBridge=[" ", 1, 0, -5]
@@ -15,10 +17,20 @@ typeSwitcher = {
     4: typeRiver 
 }
 
-class tile:
-    def __init__(self, tType):
-        self.type=typeSwitcher.get(tType, "nothing")
-        self.unit=None
+class tile(sprite):
+
+    BGCOLOR = pygame.Color(95, 111, 58)
+    SBGCOLOR = pygame.Color(144, 159, 67)
+    
+    def __init__(self, tType, x, y, w = 60, h = 60, unit = None):
+        super().__init__(x, y, w, h)
+        self.type = typeSwitcher.get(tType, "nothing")
+        self.unit = unit
+        self.inRange = 0
+
+        #controlls animation of tile
+        self.selected = False
+        self.animation = 0
 
     def tileEmpty(self):
         return self.unit is None
@@ -35,6 +47,40 @@ class tile:
         else:
             return False
 
+    def setUnit(self, unit):
+        self.unit = unit
+        self.locateInCenter()
+            
+        
+    # Locates sprite in the center of the Tile
+    # Gives x and y possition to unit based tile position
+    def locateInCenter(self):
+        self.unit.rect.x = self.rect.x
+        self.unit.rect.y = self.rect.y
+        if(self.unit.rect.w <= self.rect.w):
+            if(self.unit.rect.h <= self.rect.h):
+                self.unit.rect.x += (self.rect.w - self.unit.rect.w)//2
+                self.unit.rect.y += (self.rect.h - self.unit.rect.h)//2
+        # Define image scale for cases where sprite is bigger than tile
+
+    def draw(self):
+        self.update()
+        self.drawSquare()
+        if self.unit != None:
+            self.unit.draw()
+
+    def update(self):
+        if(self.selected):
+            if(self.animation < 32):
+                self.animation += 1
+                self.rectColor =  tile.SBGCOLOR
+            elif(self.animation < 64):
+                self.animation += 1
+                self.rectColor = tile.BGCOLOR
+            else:
+                self.animation = 0
+        else:
+            self.rectColor = tile.BGCOLOR
 #a1=tile(2)
 #a2=tile(2)
 #a2.unit="John Smith"

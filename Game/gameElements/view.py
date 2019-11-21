@@ -10,5 +10,5 @@ class view:
     def update(self):
         sprite.screen.fill(view.BLACK)
         for sprt in self.model.sprites:
-            sprt.drawSquare()
+            sprt.draw()
         pygame.display.update()
