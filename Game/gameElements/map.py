@@ -1,3 +1,4 @@
+import random
 from tile import *
 from sprite import *
 def enemiesEliminated(self):#example clear condition
@@ -129,7 +130,7 @@ class map(sprite):
             self.calculateRangeTable(origX, origY, self.tiles[origX][origY].unit.Movement)
             #need some code to graphically represent the range table here
         else: #The player clicked a tile with no unit or a unit they don't control
-            pass #bring up a menu to either end your turn or save the game
+            pass
 
     def MoveUnit(self, origX, origY, newX, newY):
         if(self.rangeTable[newX][newY]==1):
@@ -137,6 +138,58 @@ class map(sprite):
             self.tiles[origX][origY].unit=None
             #pop up a menu to ask if the player wants the unit to try to attack here
 
+    def combat(self, atkrX, atkrY, dfdrX, dfdrY): #pass it the unit that's attacking and the unit that's attacked
+        atkr=self.tiles[atkrX][atkrY].unit
+        dfdr=self.tiles[dfdrX][dfdrY].unit
+        #Attacker does his hit
+        hitChanceAtkr=70+atkr.Skill-self.tiles[dfdrX][dfdrY].type[3]
+        dfdrEffectiveDefense=dfdr.Defense-atkr.skill/2+self.tiles[dfdrX][dfdrY].type[2]
+        if(dfdrEffectiveDefense<0): #no negative defense allowed
+            dfdrEffectiveDefense=0
+        if(dfdrEffectiveDefense%1 != 0):#no decimal point defense allowed
+            dfdrEffectiveDefense+=0.5
+
+        dmg1=atkr.Attack-dfdrEffectiveDefense
+        if(dmg1<0): #no attack is allowed to do negative damage (would heal the target)
+            dmg1=0
+
+        rn=random.randint(0,99)
+        if(rn<hitChanceAtkr):
+            dfdr.HP-=dmg1
+            
+        #defender does his hit if he lives
+        if(dfdr.HP>0):
+            hitChanceDfdr=70+dfdr.Skill-self.tiles[atkrX][atkrY].type[3]
+            atkrEffectiveDefense=atkr.Defense-dfdr.skill/2+self.tiles[atkrX][atkrY].type[2]
+            if(atkrEffectiveDefense<0):
+                dfdrEffectiveDefense=0
+            if(atkrEffectiveDefense%1 != 0):
+                dfdrEffectiveDefense+=0.5
+
+            dmg2=dfdr.Attack-atkrEffectiveDefense
+            if(dmg2<0):
+                dmg2=0
+
+            rn=random.randint(0,99)
+            if(rn<hitChanceDfdr):
+                atkr.HP-=dmg2
+
+            #if attacker is still alive decide if anyone makes a second attack
+            if(atkr.HP>0):
+                if(atkr.Speed>dfdr.Speed):
+                    rn=random.randint(0,99)
+                    if(rn<hitChanceAtkr):
+                        dfdr.HP-=dmg1
+                elif(atkr.Speed<dfdr.Speed):
+                    rn=random.randint(0,99)
+                    if(rn<hitChanceDfdr):
+                        atkr.HP-=dmg2
+        if(atkr.HP<=0):
+            tiles[atkrX][atkrY].unit=None #there will probably be a function here later for calculating exp gain
+        elif(dfdr.HP<=0):
+            tiles[dfdrX][dfdrY].unit=None #there will probably be a function here later for calculating exp gain
+        
+        
 '''        
 a=map("level1.txt") #note that you have to manually set the height and width in the constructor right now
 #if you don't do this rangeTable will not be correctly declared in the initializor
