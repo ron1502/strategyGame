@@ -13,7 +13,10 @@ class Unit(sprite):
         self.XP = xp
         self.Movement = movement
         self.Type = description
+        
         self.isEnemy = False
+        self.maxFatigue=5 #arbitrary value but I believe it's well balanced for the small size of our maps
+        self.fatigue=0
 
     def getX(self):
         return super.getX()
@@ -25,7 +28,10 @@ class Unit(sprite):
         return super.setX(x)
 
     def setY(self, y):      
-        return super.setY(y)     
+        return super.setY(y)
+
+    def changeIsEnemy(self):
+        self.isEnemy=not(self.isEnemy)
 
 
 # -------------------------------------
