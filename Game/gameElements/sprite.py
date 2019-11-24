@@ -42,12 +42,11 @@ class sprite:
 				self.rect.y = collideSprite.rect.y -1 - self.rect.h
 		return collide
 
-
-		
 	def loadImg(self, imgPath):
 		# Turns image path into an absolute path using the current working directory
 		# Loads image and rescale using the dimension defined in self.rect
 		imgPath = os.getcwd() + imgPath
+		self.init(self.sWidth, self.sHeight, "Test")
 		self.img = pygame.image.load(imgPath).convert_alpha()
 		self.img = pygame.transform.scale(self.img, (self.rect.w, self.rect.h))
 	
@@ -71,4 +70,5 @@ class sprite:
 		self.drawImg()
 	
 	def printData(self):
-		print("SpriteData: \nX: " + str(self.rect.x) + "\nY: " + str(self.rect.y) + "\nW:" + str(self.rect.w) + "\nH: " + str(self.rect.w))
+		print("SpriteData: \nX: " + str(self.rect.x) + "\nY: " + str(self.rect.y) + "\nW:" + str(self.rect.w) + "\nH: " + str(self.rect.h))
+																																# Fixed Error
