@@ -57,6 +57,8 @@ class map(sprite):
         for i in range(map.COLUMNCOUNT):
             self.atkRangeTable[i]=[0]*map.COLUMNCOUNT
 
+        self.enemyCanAttack=False #This is messy Hayes-code to make the program run more efficiently
+
     def render(self):
         pass
 
@@ -69,7 +71,7 @@ class map(sprite):
     def constructRangeTable(self, x, y, MOV): #x refers to what row the unit is in, y is what column it's in.
         if self.tiles[x][y].tileEmpty():
             self.rangeTable[x][y]=1 #a unit is allowed to stay where it is, "move" to its own location.
-
+        atkRange=1
         if (x-atkRange)>=0:
             if not(self.tiles[x-atkRange][y].tileEmpty()):
                 if (self.tiles[x-atkRange][y].unit.isEnemy):
@@ -114,18 +116,30 @@ class map(sprite):
             if not(self.tiles[x-atkRange][y].tileEmpty()):
                 if not(self.tiles[x-atkRange][y].unit.isEnemy):
                     self.atkRangeTable[x-atkRange][y]=1
+<<<<<<< HEAD
         if (x+atkRange)<map.ROWCOUNT:
+=======
+                    self.enemyCanAttack=True
+        if (x+atkRange)<self.height:
+>>>>>>> 9092ac43d866c24a2f883f8d2de0c78a32563283
             if not(self.tiles[x+atkRange][y].tileEmpty()):
                 if not(self.tiles[x+atkRange][y].unit.isEnemy):
                     self.atkRangeTable[x+atkRange][y]=1
+                    self.enemyCanAttack=True
         if (y-atkRange)>=0:
             if not(self.tiles[x][y-atkRange].tileEmpty()):
                 if not(self.tiles[x][y-atkRange].unit.isEnemy):
                     self.atkRangeTable[x][y-atkRange]=1
+<<<<<<< HEAD
         if (y+atkRange)<map.COLUMNCOUNT:
+=======
+                    self.enemyCanAttack=True
+        if (y+atkRange)<self.width:
+>>>>>>> 9092ac43d866c24a2f883f8d2de0c78a32563283
             if not(self.tiles[x][y+atkRange].tileEmpty()):
                 if not(self.tiles[x][y+atkRange].unit.isEnemy):
                     self.atkRangeTable[x][y+atkRange]=1
+                    self.enemyCanAttack=True
         #calculate movement table            
         if x-1>=0:
             if self.tiles[x-1][y].isInRangeEnemy(MOV):
@@ -148,9 +162,16 @@ class map(sprite):
     
 
     def clearRangeTables(self):
+<<<<<<< HEAD
         self.rangeTable=[0]*map.COLUMNCOUNT
         for i in range(map.COLUMNCOUNT):
             self.rangeTable[i]=[0]*map.ROWCOUNT
+=======
+        self.rangeTable=[0]*self.width
+        for i in range(self.width):
+            self.rangeTable[i]=[0]*self.height
+        self.enemyCanAttack=False
+>>>>>>> 9092ac43d866c24a2f883f8d2de0c78a32563283
 
     def drawGridLines(self):
         yLimit = map.GHEIGHT * map.ROWCOUNT + map.TOPMARGIN
@@ -183,17 +204,213 @@ class map(sprite):
         if (not(tiles[origX][origY].tileEmpty()) and not(tiles[origX][origY].unit.isEnemy)):
             self.rangeTable[origX][origY]=1
             self.calculateRangeTable(origX, origY, self.tiles[origX][origY].unit.Movement)
-            #need some code to graphically represent the range table here
-        else: #The player clicked a tile with no unit or a unit they don't control
-            pass #bring up a menu to either end your turn or save the game
+            else: #The player clicked a tile with no unit or a unit they don't control
+            pass
 
     def MoveUnit(self, origX, origY, newX, newY):
         if(self.rangeTable[newX][newY]==1):
             self.tiles[newX][newY].unit=self.tiles[origX][origY].unit
             self.tiles[origX][origY].unit=None
-            #pop up a menu to ask if the player wants the unit to try to attack here
+            fatigueAdded=newX-origX+newY-origY
+            fatigueAdded=abs(fatigueAdded)
+            self.tiles[newX][newY].unit.fatigue+=fatigueAdded
 
-'''        
+
+    def combat(self, atkrX, atkrY, dfdrX, dfdrY): #pass it the unit that's attacking and the unit that's attacked
+        atkr=self.tiles[atkrX][atkrY].unit
+        dfdr=self.tiles[dfdrX][dfdrY].unit
+        #Attacker does his hit
+        hitChanceAtkr=70+atkr.Skill-self.tiles[dfdrX][dfdrY].type[3]
+        dfdrEffectiveDefense=dfdr.Defense-atkr.skill/2+self.tiles[dfdrX][dfdrY].type[2]
+        if(dfdrEffectiveDefense<0): #no negative defense allowed
+            dfdrEffectiveDefense=0
+        if(dfdrEffectiveDefense%1 != 0):#no decimal point defense allowed
+            dfdrEffectiveDefense+=0.5
+
+        dmg1=atkr.Attack-dfdrEffectiveDefense
+        if(dmg1<0): #no attack is allowed to do negative damage (would heal the target)
+            dmg1=0
+
+        rn=random.randint(0,99)
+        if(rn<hitChanceAtkr):
+            dfdr.HP-=dmg1
+            atkr.fatigue+=1
+        else:
+            dfdr.fatigue+=1
+            
+        #defender does his hit if he lives
+        if(dfdr.HP>0):
+            hitChanceDfdr=70+dfdr.Skill-self.tiles[atkrX][atkrY].type[3]
+            atkrEffectiveDefense=atkr.Defense-dfdr.skill/2+self.tiles[atkrX][atkrY].type[2]
+            if(atkrEffectiveDefense<0):
+                dfdrEffectiveDefense=0
+            if(atkrEffectiveDefense%1 != 0):
+                dfdrEffectiveDefense+=0.5
+
+            dmg2=dfdr.Attack-atkrEffectiveDefense
+            if(dmg2<0):
+                dmg2=0
+
+            rn=random.randint(0,99)
+            if(rn<hitChanceDfdr):
+                atkr.HP-=dmg2
+                dfdr.fatigue+=1
+            else:
+                atkr.fatigue+=1
+
+            #if attacker is still alive decide if anyone makes a second attack
+            if(atkr.HP>0):
+                if(atkr.Speed>dfdr.Speed):
+                    rn=random.randint(0,99)
+                    if(rn<hitChanceAtkr):
+                        dfdr.HP-=dmg1
+                        atkr.fatigue+=1
+                    else:
+                        dfdr.fatigue+=1
+                elif(atkr.Speed<dfdr.Speed):
+                    rn=random.randint(0,99)
+                    if(rn<hitChanceDfdr):
+                        atkr.HP-=dmg2
+                        dfdr.fatigue+=1
+                    else:
+                        atkr.fatigue+=1
+        if(atkr.HP<=0):
+            tiles[atkrX][atkrY].unit=None #there will probably be a function here later for calculating exp gain
+        elif(dfdr.HP<=0):
+            tiles[dfdrX][dfdrY].unit=None #there will probably be a function here later for calculating exp gain
+
+    
+    
+    def endTurn(self):
+        if turn==1:
+            turn=2
+        elif turn==2:
+            turn=1
+            for i in range(map.ROWCOUNT):
+                for j in range(map.COLUMNCOUNT):
+                    if(self.tiles[i][j].unit!=None):
+                        if(self.tiles[i][j].unit.fatigue>0):
+                            self.tiles[i][j].unit.fatigue-=1
+        return self.isClear() #if endTurn returns true then the level is over.
+
+    def enemyAIUnitSelect(self):
+        enemyList=[]
+        for i in range(map.ROWCOUNT):
+            for j in range(map.COLUMNCOUNT):
+                if(self.tiles[i][j].unit!=None):
+                    if(self.tiles[i][j].unit.isEnemy):
+                        if(self.tiles[i][j].unit.fatigue<self.tiles[i][j].unit.maxFatigue):
+                            #if(self.tiles[i][j].unit  #check that enemy type is not "wait" here
+                            enemyData=[self.tiles[i][j].unit, i, j]
+                            enemyList.append(enemyData)
+
+        newEList=[]
+        minFatigue=100 #Can an enemy attack? If so we're moving the one with the lowest fatigue to attack.
+        for ENEMY in enemyList:
+            self.constructEnemyRangeTable(ENEMY[1], ENEMY[2], ENEMY[0].Movement, 1)
+            if self.enemyCanAttack:
+                if(ENEMY[0].fatigue==minFatigue):
+                    newEList.append(ENEMY)
+                elif(ENEMY[0].fatigue<minFatigue):
+                    newEList.Clear()
+                    newEList.append(ENEMY)
+                    minFatigue=ENEMY[0].fatigue
+            self.clearRangeTables()
+
+
+        if len(newEList)==0:
+            newEList.Clear()
+            minFatigue=100
+            for ENEMY in enemyList:
+                #if enemy AI type is attack
+                    if(ENEMY[0].fatigue==minFatigue):
+                        newEList.append(ENEMY)
+                    elif(ENEMY[0].fatigue<minFatigue):
+                        newEList.Clear()
+                        newEList.append(ENEMY)
+                        minFatigue=ENEMY[0].fatigue
+
+        if len(newEList==0):
+            self.endTurn()
+        else:
+            selectedEnemy=newEList[0]
+            self.enemyMove(selectedEnemy[0], selectedEnemy[1], selectedEnemy[2])
+
+    def enemyMove(self, se, x, y): #se for selected enemy
+        self.constructEnemyRangeTable(x, y, se.Movement, 1)
+        attackTargets=[]
+        if self.enemyCanAttack:
+            for i in range(map.ROWCOUNT):
+                for j in range(map.COLUMNCOUNT):
+                    if self.atkRangeTable[j][i]==1:
+                        target=[j , i]
+                        attackTargets.append(target)
+            minHP=1000
+            abcd=[]
+            for t in attackTargets:
+                if minHP==self.tiles[t[0]][t[1]].unit.HP:
+                    toAppend=[t[0], t[1]]
+                    abcd.append(toAppend)
+                elif minHP>self.tiles[t[0]][t[1]].unit.HP:
+                    abcd.Clear()
+                    toAppend=[t[0], t[1]]
+                    abcd.append(toAppend)
+                    minHP=self.tiles[t[0]][t[1]].unit.HP
+            t=attackTargets[0]
+            X=t[0]
+            Y=t[1]
+            if(self.rangeTable[X-1][Y]==1):
+                self.moveUnit(x, y, X-1, Y)
+                self.combat(X-1, Y, X, Y)
+            elif(self.rangeTable[X+1][Y]==1):
+                self.moveUnit(x, y, X+1, Y)
+                self.combat(X+1, Y, X, Y)
+            elif(self.rangeTable[X][Y-1]==1):
+                self.moveUnit(x, y, X, Y-1)
+                self.combat(X, Y-1, X, Y)
+            elif(self.rangeTable[X][Y+1]==1):
+                self.moveUnit(x, y, X, Y+1)
+                self.combat(X, Y+1, X, Y)
+        else:
+            found=False
+            for i in range(map.ROWCOUNT):
+                for j in range(map.COLUMNCOUNT):
+                    if(not(self.tiles[i][j].tileEmpty())):
+                        if self.tiles[i][j].unit.isEnemy:
+                            found=True
+                            break
+                if found:
+                    break
+            mov=se.Movement
+            if i<x:
+                while(x>=0 and (mov-self.tiles[x-1][y].type[1])>=0):
+                    moveUnit(x, y, x-1, y)
+                    x-=1
+                    mov-=self.tiles[x-1][y].type[1]
+            elif i>x:
+                while(x<=map.ROWCOUNT and (mov-self.tiles[x+1][y].type[1])>=0):
+                    moveUnit(x, y, x+1, y)
+                    x+=1
+                    mov-=self.tiles[x+1][y].type[1]
+            if j<y:
+                while(y>=0 and (mov-self.tiles[x][y-1].type[1])>=0):
+                    moveUnit(x, y, x, y-1)
+                    y-=1
+                    mov-=self.tiles[x][y-1].type[1]
+            elif j>y:
+                while(y<=map.COLUMNCOUNT and (mov-self.tiles[x][y-1].type[1])>=0):
+                    moveUnit(x, y, x, y+1)
+                    y+=1
+                    mov-=self.tiles[x][y+1].type[1]
+            
+        self.endTurn()
+                
+            
+            
+
+
+
+'''
 a=map("level1.txt") #note that you have to manually set the height and width in the constructor right now
 #if you don't do this rangeTable will not be correctly declared in the initializor
 #this will not be a problem in the final version as height and width will be read from a file before setting up rangeTable
