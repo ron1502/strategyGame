@@ -116,12 +116,7 @@ class map(sprite):
             if not(self.tiles[x-atkRange][y].tileEmpty()):
                 if not(self.tiles[x-atkRange][y].unit.isEnemy):
                     self.atkRangeTable[x-atkRange][y]=1
-<<<<<<< HEAD
         if (x+atkRange)<map.ROWCOUNT:
-=======
-                    self.enemyCanAttack=True
-        if (x+atkRange)<self.height:
->>>>>>> 9092ac43d866c24a2f883f8d2de0c78a32563283
             if not(self.tiles[x+atkRange][y].tileEmpty()):
                 if not(self.tiles[x+atkRange][y].unit.isEnemy):
                     self.atkRangeTable[x+atkRange][y]=1
@@ -130,12 +125,7 @@ class map(sprite):
             if not(self.tiles[x][y-atkRange].tileEmpty()):
                 if not(self.tiles[x][y-atkRange].unit.isEnemy):
                     self.atkRangeTable[x][y-atkRange]=1
-<<<<<<< HEAD
         if (y+atkRange)<map.COLUMNCOUNT:
-=======
-                    self.enemyCanAttack=True
-        if (y+atkRange)<self.width:
->>>>>>> 9092ac43d866c24a2f883f8d2de0c78a32563283
             if not(self.tiles[x][y+atkRange].tileEmpty()):
                 if not(self.tiles[x][y+atkRange].unit.isEnemy):
                     self.atkRangeTable[x][y+atkRange]=1
@@ -162,17 +152,9 @@ class map(sprite):
     
 
     def clearRangeTables(self):
-<<<<<<< HEAD
         self.rangeTable=[0]*map.COLUMNCOUNT
         for i in range(map.COLUMNCOUNT):
             self.rangeTable[i]=[0]*map.ROWCOUNT
-=======
-        self.rangeTable=[0]*self.width
-        for i in range(self.width):
-            self.rangeTable[i]=[0]*self.height
-        self.enemyCanAttack=False
->>>>>>> 9092ac43d866c24a2f883f8d2de0c78a32563283
-
     def drawGridLines(self):
         yLimit = map.GHEIGHT * map.ROWCOUNT + map.TOPMARGIN
         xLimit = map.GWIDTH * map.COLUMNCOUNT + map.LEFTMARGIN
@@ -204,7 +186,7 @@ class map(sprite):
         if (not(tiles[origX][origY].tileEmpty()) and not(tiles[origX][origY].unit.isEnemy)):
             self.rangeTable[origX][origY]=1
             self.calculateRangeTable(origX, origY, self.tiles[origX][origY].unit.Movement)
-            else: #The player clicked a tile with no unit or a unit they don't control
+        else:
             pass
 
     def MoveUnit(self, origX, origY, newX, newY):
