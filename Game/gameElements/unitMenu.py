@@ -17,7 +17,8 @@ class unitMenu(sprite):
         self.walkB = button(x, 250, w, "S", "Walk", self.walkFunct, unitMenu.BUTTONCOLOR)
         self.endTurnB = button(x, 600, w, "S", "End Turn", self.endTurn, unitMenu.BUTTONCOLOR)
 
-        self.attackB.setActive(False)
+        #Deactivation of button
+        #   self.attackB.setActive(False)
 
     def getButtons(self):
         return (self.attackB, self.itemsB, self.walkB, self.endTurnB)
