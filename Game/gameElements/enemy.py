@@ -1,14 +1,16 @@
-from unit import Unit
+from Game.gameElements.unit import Unit
 
 class Enemy(Unit):
 
     def __init__(self, x, y, w, h, img_name, description, hp, attack, defense, xp, 
                 fatigue, currentLvl, xp_to_next_lvl, isEnemy = True):
         super().__init__(x, y, w, h, img_name, description, hp, attack, defense, xp, 
-                fatigue, currentLvl, xp_to_next_lvl, isEnemy)
+                fatigue, currentLvl, xp_to_next_lvl)
+        self.isEnemy = True
 
 # Test Cases
 # ---------------------------------------------------------------------------------
+'''
 xVal = 1
 yVal = 2
 wVal = 3
@@ -28,3 +30,4 @@ test = Enemy(xVal, yVal, wVal, hVal, sqrtPath, name, lvl, exp, expNext, hp, hpMa
 
 print("--------------------------------")
 test.getInformation()
+'''
