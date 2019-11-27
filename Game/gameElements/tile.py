@@ -1,5 +1,5 @@
-from Game.gameElements.sprite import sprite
 import pygame
+from Game.gameElements.sprite import sprite
 
 
 #for each type: [0]=their sprite [1]=movement cost of tile [2]=defense value of tile [3]=avoidance value of tile
@@ -21,6 +21,8 @@ class tile(sprite):
 
     BGCOLOR = pygame.Color(95, 111, 58)
     SBGCOLOR = pygame.Color(144, 159, 67)
+    MAPTOPMARGIN = 0
+    MAPLEFTMARGIN = 0
     
     def __init__(self, tType, x, y, w = 60, h = 60, unit = None):
         super().__init__(x, y, w, h)
@@ -68,6 +70,13 @@ class tile(sprite):
         self.drawSquare()
         if self.unit != None:
             self.unit.draw()
+
+    # Getting coordintes of tiles in map table
+    def getRIndex(self):
+        return (self.rect.y - tile.MAPTOPMARGIN)//self.rect.h 
+
+    def getCIndex(self):
+        return (self.rect.x - tile.MAPLEFTMARGIN)//self.rect.w
 
     def update(self):
         if(self.selected):
