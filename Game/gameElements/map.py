@@ -1,8 +1,10 @@
 from Game.gameElements.tile import tile
 from Game.gameElements.sprite import sprite
 from Game.gameElements.unit import Unit
+from Game.gameElements.enemy import Enemy
 
 import pygame
+import random
 
 def enemiesEliminated(self):#example clear condition
     return self.enemies is 0
@@ -30,6 +32,9 @@ class map(sprite):
 
         self.tiles=[]
         
+        tile.MAPTOPMARGIN = map.TOPMARGIN
+        tile.MAPLEFTMARGIN = map.LEFTMARGIN
+        
         ## Tile initialization (Can be used for the initialization of tiles in from  jsonData)
         # In that case map dimension can be access with no problem through map
         
@@ -45,10 +50,14 @@ class map(sprite):
         newUnit = Unit(0, 0, 50, 50, r"\resources\sprites\link.png", "OK BOOMER", 100, 100, 100, 100, 100, 100, 100)
         self.tiles[2][4].setUnit(newUnit)
         print(str(self.tiles[2][4].unit))
-            
-        self.enemies=0
+
+        newEnemy = Enemy(0, 0, 50, 50, r"\resources\sprites\link(enemy).png", "I DON'T LIKE YOU BRUH", 100, 100, 100, 100, 100, 100, 100)
+        self.tiles[5][9].setUnit(newEnemy)
+        print(str(self.tiles[5][9].unit))
+        ##################################
+        self.enemies = 1
         self.clearCondition=0
-        self.turn=1 #it's 1 when player's turn 2 when enemy's turn.
+        self.turn = 1 #it's 1 when player's turn 2 when enemy's turn.
         self.rangeTable=[0] * map.ROWCOUNT
         for i in range(map.ROWCOUNT):
             self.rangeTable[i]=[0]*map.COLUMNCOUNT
@@ -62,6 +71,8 @@ class map(sprite):
     def render(self):
         pass
 
+    # isClear()
+    #   Returns if enemy count == 0
     def isClear(self):
         func=clearSwitcher.get(self.clearCondition, "nothing")
         return func(self)
@@ -165,23 +176,28 @@ class map(sprite):
             xLinePos = map.GWIDTH * colNum + map.LEFTMARGIN
             pygame.draw.line(sprite.screen, map.GRIDCOLOR, (xLinePos,  map.TOPMARGIN), (xLinePos, yLimit))
 
-    ## Can become part of model depending of out needs  ##
+    ## Can become part of model depending of our needs  ##
     def drawTileContent(self):
         for i in range(map.ROWCOUNT):
             for j in range(map.COLUMNCOUNT):
                 self.tiles[i][j].draw()
 
+    #
+    # Gets tile that has been clicked on
     def getSelectedTile(self, x, y):
         for row in self.tiles:
             for tile in row:
                 if(tile.mouseInIt(x, y)): return tile
         return None
 
-    #######################################################
     def draw(self):
         self.drawTileContent()
         self.drawGridLines()
 
+    #
+    #
+    #
+    # USAGE: None
     def selectUnitToMove(self, origX, origY): #some states and variables may need to be set in the controller during this process, I don't know
         if (not(tiles[origX][origY].tileEmpty()) and not(tiles[origX][origY].unit.isEnemy)):
             self.rangeTable[origX][origY]=1
@@ -189,6 +205,11 @@ class map(sprite):
         else:
             pass
 
+    # MoveUnit()
+    #   Changes position of unit to a new tile and calculates the fatigue of performing such movement
+    #   IMPLEMENTATION (BASIC): Call after selecting tile to move, get XY positions of both tiles
+    #                           Change selected value of tile befr calling funciton.
+    #   USAGE: enemyMove()
     def MoveUnit(self, origX, origY, newX, newY):
         if(self.rangeTable[newX][newY]==1):
             self.tiles[newX][newY].unit=self.tiles[origX][origY].unit
@@ -197,13 +218,22 @@ class map(sprite):
             fatigueAdded=abs(fatigueAdded)
             self.tiles[newX][newY].unit.fatigue+=fatigueAdded
 
+    #combat()
+    #   Receives coordintes of the tiles of attaker and defender
+    #       If defender is alive after attack it counter attacks
+    #           If attaker is alive after defender counter attacks, attacker attaks again
+    # CONSIDER: Adding attack and dying animation would be complicated with the current inplementation
+    #           Units will be deleted
+    # IMPLEMENTATION (BASIC): Call combat afeter defender tile is select.
+    #                         Create a getXY position funciton in Tile to get positions
 
     def combat(self, atkrX, atkrY, dfdrX, dfdrY): #pass it the unit that's attacking and the unit that's attacked
-        atkr=self.tiles[atkrX][atkrY].unit
+        print("Attaker pos: X:" + str(atkrX) + " Y: " + str(atkrY))
+        atkr = self.tiles[atkrX][atkrY].unit
         dfdr=self.tiles[dfdrX][dfdrY].unit
         #Attacker does his hit
-        hitChanceAtkr=70+atkr.Skill-self.tiles[dfdrX][dfdrY].type[3]
-        dfdrEffectiveDefense=dfdr.Defense-atkr.skill/2+self.tiles[dfdrX][dfdrY].type[2]
+        hitChanceAtkr = 70 + atkr.Skill - self.tiles[dfdrX][dfdrY].type[3]
+        dfdrEffectiveDefense=dfdr.Defense-atkr.Skill/2+self.tiles[dfdrX][dfdrY].type[2]
         if(dfdrEffectiveDefense<0): #no negative defense allowed
             dfdrEffectiveDefense=0
         if(dfdrEffectiveDefense%1 != 0):#no decimal point defense allowed
@@ -223,7 +253,7 @@ class map(sprite):
         #defender does his hit if he lives
         if(dfdr.HP>0):
             hitChanceDfdr=70+dfdr.Skill-self.tiles[atkrX][atkrY].type[3]
-            atkrEffectiveDefense=atkr.Defense-dfdr.skill/2+self.tiles[atkrX][atkrY].type[2]
+            atkrEffectiveDefense=atkr.Defense-dfdr.Skill/2+self.tiles[atkrX][atkrY].type[2]
             if(atkrEffectiveDefense<0):
                 dfdrEffectiveDefense=0
             if(atkrEffectiveDefense%1 != 0):
@@ -262,12 +292,15 @@ class map(sprite):
             tiles[dfdrX][dfdrY].unit=None #there will probably be a function here later for calculating exp gain
 
     
-    
+    # endTurn()
+    #   Changes the value of turn based on the current value of turn
+    #   Increases fatigue of every unit on the map
+    #   USAGE: Call after AI is executed
     def endTurn(self):
-        if turn==1:
-            turn=2
-        elif turn==2:
-            turn=1
+        if self.turn==1:
+            self.turn=2
+        elif self.turn==2:
+            self.turn=1
             for i in range(map.ROWCOUNT):
                 for j in range(map.COLUMNCOUNT):
                     if(self.tiles[i][j].unit!=None):
