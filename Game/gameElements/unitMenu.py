@@ -1,5 +1,6 @@
 from Game.gameElements.sprite import sprite
 from Game.gameElements.button import button
+from Game.gameElements.stats import stats
 import pygame
 
 class unitMenu(sprite):
@@ -15,13 +16,21 @@ class unitMenu(sprite):
         self.attackB = button(x, 50, w, "S", "Attack", self.attackFunct, unitMenu.BUTTONCOLOR)
         self.itemsB = button(x, 150, w, "S", "Items", self.itemsFunct, unitMenu.BUTTONCOLOR)
         self.walkB = button(x, 250, w, "S", "Walk", self.walkFunct, unitMenu.BUTTONCOLOR)
+        self.stats = stats(x, 350, w)
         self.endTurnB = button(x, 600, w, "S", "End Turn", self.endTurn, unitMenu.BUTTONCOLOR)
 
         #Deactivation of button
         #   self.attackB.setActive(False)
 
+    def setUnit(self, unit):
+        self.stats.setUnit(unit)
+        #Enable or desable certain buttons
+        
     def getButtons(self):
         return (self.attackB, self.itemsB, self.walkB, self.endTurnB)
+
+    def getStatsSprite(self):
+        return self.stats
 
     # Functions to modify the current actions
     def attackFunct(self):
