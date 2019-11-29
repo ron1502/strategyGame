@@ -30,6 +30,7 @@ class model:
         self.addSprite(self.map)
         self.addSprite(self.unitMenu)
         self.sprites += self.unitMenu.getButtons()
+        self.addSprite(self.unitMenu.getStatsSprite())
 
     def setUpMenu(self):
         self.menu = menu()
@@ -52,6 +53,7 @@ class model:
                 self.selectedTile = self.map.getSelectedTile(x, y)
                 if(self.selectedTile != None):
                     if(self.selectedTile.unit != None):
+                        self.unitMenu.setUnit(self.selectedTile.unit)
                         if(self.tileControlledUnit == None):
                             #Tile can only be controlled if ally or controll unit is empty
                             if(not self.selectedTile.unit.isEnemy):
