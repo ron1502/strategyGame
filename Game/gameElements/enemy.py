@@ -1,12 +1,15 @@
 from Game.gameElements.unit import Unit
 
 class Enemy(Unit):
-
+    #On AIType: AITYPE=0 : HALT - do not move ever
+    #AITYPE=1 : WAIT - move to attack if an enemy is in range
+    #AITYPE=2 : ATTACK - move closer to an enemy if no other unit can attack
     def __init__(self, x, y, w, h, img_name, description, hp, attack, defense, xp, 
-                fatigue, currentLvl, xp_to_next_lvl, isEnemy = True):
+                fatigue, currentLvl, xp_to_next_lvl, AITYPE, isEnemy = True):
         super().__init__(x, y, w, h, img_name, description, hp, attack, defense, xp, 
                 fatigue, currentLvl, xp_to_next_lvl)
         self.isEnemy = True
+        self.AIType = AITYPE
 
 # Test Cases
 # ---------------------------------------------------------------------------------

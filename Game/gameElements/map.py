@@ -288,13 +288,14 @@ class map(sprite):
                         atkr.fatigue+=1
         if(atkr.HP<=0):
             tiles[atkrX][atkrY].unit=None #there will probably be a function here later for calculating exp gain
+            
         elif(dfdr.HP<=0):
             tiles[dfdrX][dfdrY].unit=None #there will probably be a function here later for calculating exp gain
 
     
     # endTurn()
     #   Changes the value of turn based on the current value of turn
-    #   Increases fatigue of every unit on the map
+    #   Decreases fatigue of every unit on the map
     #   USAGE: Call after AI is executed
     def endTurn(self):
         if self.turn==1:
@@ -315,9 +316,9 @@ class map(sprite):
                 if(self.tiles[i][j].unit!=None):
                     if(self.tiles[i][j].unit.isEnemy):
                         if(self.tiles[i][j].unit.fatigue<self.tiles[i][j].unit.maxFatigue):
-                            #if(self.tiles[i][j].unit  #check that enemy type is not "wait" here
-                            enemyData=[self.tiles[i][j].unit, i, j]
-                            enemyList.append(enemyData)
+                            if(self.tiles[i][j].unit.AIType!=0):  #check that enemy type is not "halt" here
+                                enemyData=[self.tiles[i][j].unit, i, j]
+                                enemyList.append(enemyData)
 
         newEList=[]
         minFatigue=100 #Can an enemy attack? If so we're moving the one with the lowest fatigue to attack.
@@ -337,7 +338,7 @@ class map(sprite):
             newEList.Clear()
             minFatigue=100
             for ENEMY in enemyList:
-                #if enemy AI type is attack
+                if(ENEMY.AIType==2):
                     if(ENEMY[0].fatigue==minFatigue):
                         newEList.append(ENEMY)
                     elif(ENEMY[0].fatigue<minFatigue):
@@ -351,7 +352,7 @@ class map(sprite):
             selectedEnemy=newEList[0]
             self.enemyMove(selectedEnemy[0], selectedEnemy[1], selectedEnemy[2])
 
-    def enemyMove(self, se, x, y): #se for selected enemy
+    def enemyMove(self, se, x, y): #se means selected enemy
         self.constructEnemyRangeTable(x, y, se.Movement, 1)
         attackTargets=[]
         if self.enemyCanAttack:
