@@ -1,0 +1,96 @@
+import pygame
+from Game.gameElements.sprite import sprite
+
+class player(sprite):
+    RIGHT = 0
+    LEFT = 1
+    def __init__(self, x, y, hp, attack, defense, skill, speed, xp):
+        super().__init__(x, y, 50, 37)
+        self.hp = hp
+        self.attack = attack
+        self.defense = defense
+        self.speed = speed
+        self.skill = skill
+        self.xp = xp
+        self.idle = [self.loadImg(r"\resources\sprites\idle\00.png"), self.loadImg(r"\resources\sprites\idle\01.png"),
+                     self.loadImg(r"\resources\sprites\idle\02.png"), self.loadImg(r"\resources\sprites\idle\03.png")]
+        self.run = []
+        self.run.append([self.loadImg(r"\resources\sprites\run\00.png"), self.loadImg(r"\resources\sprites\run\01.png"),
+                                  self.loadImg(r"\resources\sprites\run\02.png"), self.loadImg(r"\resources\sprites\run\03.png"),
+                                  self.loadImg(r"\resources\sprites\run\04.png"), self.loadImg(r"\resources\sprites\run\05.png")])
+        self.run.append([self.loadImg(r"\resources\sprites\run\L00.png"), self.loadImg(r"\resources\sprites\run\L01.png"),
+                                  self.loadImg(r"\resources\sprites\run\L02.png"), self.loadImg(r"\resources\sprites\run\L03.png"),
+                                  self.loadImg(r"\resources\sprites\run\L04.png"), self.loadImg(r"\resources\sprites\run\L05.png")])
+        self.attack = [self.loadImg(r"\resources\sprites\attack\00.png"), self.loadImg(r"\resources\sprites\attack\01.png"),
+                       self.loadImg(r"\resources\sprites\attack\02.png"), self.loadImg(r"\resources\sprites\attack\03.png"),
+                       self.loadImg(r"\resources\sprites\attack\04.png"), self.loadImg(r"\resources\sprites\attack\05.png")]
+        self.destX = x
+        self.destY = y
+        self.img = self.idle[0]
+        self.moving = False
+        self.attacking = False
+        self.standing = True
+        self.lastMove = self.lastAnimation = pygame.time.get_ticks()
+
+    def moveTo(self, x, y):
+        self.destX = x
+        self.destY = y
+
+    def move(self, origin, destinatination):
+        distance = destinatination - origin
+        moveSpeed = self.speed
+        if(not (distance % self.speed == 0)):
+            moveSpeed = distance % self.speed
+            print("move Speed Changed" + str(moveSpeed))
+        if(distance > 0):
+            return moveSpeed
+        else:
+            return -moveSpeed
+    
+    def haveToMove(self):
+        return self.destX != self.rect.x or self.destY != self.rect.y
+    
+    def update(self):
+        if(self.haveToMove()):
+            if(pygame.time.get_ticks() - self.lastMove >=  5):
+                xMove = self.move(self.rect.x, self.destX)
+                self.rect.x += xMove
+                self.rect.y += self.move(self.rect.y, self.destY)
+                self.lastMove = pygame.time.get_ticks()
+            if(pygame.time.get_ticks() - self.lastAnimation >= 75):
+                self.nextAnimation(5)
+                self.lastAnimation = pygame.time.get_ticks()
+                if(self.destX >= self.rect.x): self.img = self.run[player.RIGHT][self.animationCount]
+                else: self.img = self.run[player.LEFT][self.animationCount]
+            if(not self.haveToMove()):
+                self.standing = True
+                self.animationCount = 0
+        elif(self.attacking):
+            pass
+        else:
+            if(pygame.time.get_ticks() - self.lastAnimation >= 75):
+                self.nextAnimation(3)
+                self.img = self.idle[self.animationCount]
+                self.lastAnimation = pygame.time.get_ticks()
+
+    def draw(self):
+        self.drawImg()
+            
+            
+            
+            
+            
+            
+            
+                
+            
+        
+
+                
+                
+            
+        
+
+
+    
+

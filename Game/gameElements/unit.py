@@ -2,36 +2,15 @@ import pygame
 from Game.gameElements.sprite import sprite
 
 class Unit(sprite):
-    def __init__(self, x, y, w, h, img_name, description, hp, attack, defense, skill, speed, xp, movement):
+    def __init__(self, x, y, w, h, img_name, description, hp, attack, defense, speed, xp, movement):
         ## w & h must be attributes of the image to load and not attributes of the tile
         super().__init__(x, y, w, h, img_name)
         self.HP = hp
         self.Attack = attack
         self.Defense = defense
-        self.Skill = skill
         self.Speed = speed
         self.XP = xp
         self.Movement = movement
-        self.Type = description
-        
-        self.isEnemy = False
-        self.maxFatigue=5 #arbitrary value but I believe it's well balanced for the small size of our maps
-        self.fatigue=0
-
-    def getX(self):
-        return super.getX()
-
-    def getY(self):
-        return super.getY()
-
-    def setX(self, x):
-        return super.setX(x)
-
-    def setY(self, y):      
-        return super.setY(y)
-
-    def changeIsEnemy(self):
-        self.isEnemy=not(self.isEnemy)
 
 
 # -------------------------------------

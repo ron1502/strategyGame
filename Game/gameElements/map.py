@@ -1,7 +1,7 @@
 from Game.gameElements.tile import tile
 from Game.gameElements.sprite import sprite
 from Game.gameElements.unit import Unit
-from Game.gameElements.enemy import Enemy
+from Game.gameElements.player import player
 
 import pygame
 import random
@@ -46,15 +46,17 @@ class map(sprite):
                 newRow.append(tile(1, xPos, yPos, map.GWIDTH, map.GHEIGHT))
             self.tiles.append(newRow)
 
-        ## Adding testing units to Tiles
-        newUnit = Unit(0, 0, 50, 50, r"\resources\sprites\link.png", "OK BOOMER", 100, 100, 100, 100, 100, 100, 100)
-        self.tiles[2][4].setUnit(newUnit)
-        print(str(self.tiles[2][4].unit))
+        
 
-        newEnemy = Enemy(0, 0, 50, 50, r"\resources\sprites\link(enemy).png", "I DON'T LIKE YOU BRUH", 100, 100, 100, 100, 100, 100, 100)
-        self.tiles[5][9].setUnit(newEnemy)
-        print(str(self.tiles[5][9].unit))
-        ##################################
+##        ## Adding testing units to Tiles
+##        newUnit = Unit(0, 0, 50, 50, r"\resources\sprites\link.png", "OK BOOMER", 100, 100, 100, 100, 100, 100, 100)
+##        self.tiles[2][4].setUnit(newUnit)
+##        print(str(self.tiles[2][4].unit))
+##
+##        newEnemy = Enemy(0, 0, 50, 50, r"\resources\sprites\link(enemy).png", "I DON'T LIKE YOU BRUH", 100, 100, 100, 100, 100, 100, 100)
+##        self.tiles[5][9].setUnit(newEnemy)
+##        print(str(self.tiles[5][9].unit))
+##        ##################################
         self.enemies = 1
         self.clearCondition=0
         self.turn = 1 #it's 1 when player's turn 2 when enemy's turn.

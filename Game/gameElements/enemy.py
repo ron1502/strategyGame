@@ -1,33 +1,22 @@
-from Game.gameElements.unit import Unit
+from Game.gameElements.sprite import sprite
+class worm(sprite):
+    def __init__(self, x, y, w, h):
+        super().__init__(x, y, w, h)
+        self.attack = 10
+        self.idle = [self.loadImg(r"\resources\sprites\worm\idle\00.png"), self.loadImg(r"\resources\sprites\worm\idle\01.png"),
+                     self.loadImg(r"\resources\sprites\worm\idle\02.png"), self.loadImg(r"\resources\sprites\worm\idle\03.png"),
+                     self.loadImg(r"\resources\sprites\worm\idle\04.png"), self.loadImg(r"\resources\sprites\worm\idle\05.png"),
+                     self.loadImg(r"\resources\sprites\worm\idle\06.png"), self.loadImg(r"\resources\sprites\worm\idle\07.png")]
 
-class Enemy(Unit):
+        self.animationCount = 0
 
-    def __init__(self, x, y, w, h, img_name, description, hp, attack, defense, xp, 
-                fatigue, currentLvl, xp_to_next_lvl, isEnemy = True):
-        super().__init__(x, y, w, h, img_name, description, hp, attack, defense, xp, 
-                fatigue, currentLvl, xp_to_next_lvl)
-        self.isEnemy = True
+        self.img = idle[0]
 
-# Test Cases
-# ---------------------------------------------------------------------------------
-'''
-xVal = 1
-yVal = 2
-wVal = 3
-hVal = 4
-sqrtPath = r"\resources\sprites\link.png" # Change this after we find a sprite for enemy
-name = "Enemy"
-lvl = 1
-exp = 0
-expNext = 10
-hp = 10
-hpMax = 10
-attack = 1
-defense = 1
-fatigue = 1
+        self.idle = True
 
-test = Enemy(xVal, yVal, wVal, hVal, sqrtPath, name, lvl, exp, expNext, hp, hpMax, attack, defense, fatigue)
+        def update(self):
+            if(self.idle):
+                
+        def draw(self):
+            self.drawImg()
 
-print("--------------------------------")
-test.getInformation()
-'''

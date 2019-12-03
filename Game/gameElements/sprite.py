@@ -14,7 +14,8 @@ class sprite:
 		# RECTANGLE COLOR = GREEN BY DEFAULT
 		if(color == None): self.rectColor = pygame.Color(95, 111, 58)
 		#-----------------------------------------------
-		if(sprtPath != None): self.loadImg(sprtPath)
+		if(sprtPath != None): self.img = self.loadImg(sprtPath)
+		self.animationCount = 0
 	
 	@staticmethod
 	def init(width, height, caption):
@@ -46,15 +47,20 @@ class sprite:
 		# Turns image path into an absolute path using the current working directory
 		# Loads image and rescale using the dimension defined in self.rect
 		imgPath = os.getcwd() + imgPath
-		self.init(self.sWidth, self.sHeight, "Test")
-		self.img = pygame.image.load(imgPath).convert_alpha()
-		self.img = pygame.transform.scale(self.img, (self.rect.w, self.rect.h))
+		img = pygame.image.load(imgPath).convert_alpha()
+		img = pygame.transform.scale(img, (self.rect.w, self.rect.h))
+		return img
+	
+	def nextAnimation(self, limit):
+		if(self.animationCount == limit):
+			self.animationCount = 0
+		else: self.animationCount += 1
 	
 	def getX(self):
 		return self.rect.x
 
 	def mouseInIt(self, x, y):
-                return self.rect.collidepoint(x,y)
+		return self.rect.collidepoint(x,y)
 	
 	def getY(self):
 		return self.y
