@@ -5,7 +5,7 @@ class player(sprite):
     RIGHT = 0
     LEFT = 1
     def __init__(self, x, y, hp, attack, defense, skill, speed, xp):
-        super().__init__(x, y, 50, 37)
+        super().__init__(x, y, 75, 55)
         self.hp = hp
         self.attack = attack
         self.defense = defense
@@ -30,7 +30,8 @@ class player(sprite):
         self.moving = False
         self.attacking = False
         self.standing = True
-        self.lastMove = self.lastAnimation = pygame.time.get_ticks()
+        self.lastMove = pygame.time.get_ticks()
+        self.damage = False
 
     def moveTo(self, x, y):
         self.destX = x
@@ -46,7 +47,21 @@ class player(sprite):
             return moveSpeed
         else:
             return -moveSpeed
-    
+
+    def perfAttack(self):
+        if(not self.attacking):
+            self.attacking = True
+            self.standing = False
+            self.animationCount = 0
+        else:
+            if(self.animationCount == 6):
+                self.standing = True
+                self.attacking =  False
+                self.animationCount = 0
+                self.damage =  True
+        return self.attacking
+            
+
     def haveToMove(self):
         return self.destX != self.rect.x or self.destY != self.rect.y
     
@@ -57,21 +72,20 @@ class player(sprite):
                 self.rect.x += xMove
                 self.rect.y += self.move(self.rect.y, self.destY)
                 self.lastMove = pygame.time.get_ticks()
-            if(pygame.time.get_ticks() - self.lastAnimation >= 75):
-                self.nextAnimation(5)
-                self.lastAnimation = pygame.time.get_ticks()
+            if(self.nextAnimation(5, 75)):
                 if(self.destX >= self.rect.x): self.img = self.run[player.RIGHT][self.animationCount]
                 else: self.img = self.run[player.LEFT][self.animationCount]
             if(not self.haveToMove()):
                 self.standing = True
                 self.animationCount = 0
         elif(self.attacking):
-            pass
+            if(self.nextAnimation(6, 75)):
+                #Extra attack limit added to know when the animation is over
+                if(self.perfAttack()):
+                   self.img = self.attack[self.animationCount]
         else:
-            if(pygame.time.get_ticks() - self.lastAnimation >= 75):
-                self.nextAnimation(3)
+            if(self.nextAnimation(3, 75)):
                 self.img = self.idle[self.animationCount]
-                self.lastAnimation = pygame.time.get_ticks()
 
     def draw(self):
         self.drawImg()

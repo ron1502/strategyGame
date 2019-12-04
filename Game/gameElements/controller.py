@@ -22,5 +22,7 @@ class controller:
                     pass
                 elif event.key == pygame.K_d:
                     pass
+                elif event.key == pygame.K_SPACE:
+                    self.model.player.perfAttack()
             elif event.type == pygame.MOUSEBUTTONUP:
                 self.model.checkClick(event.pos[0], event.pos[1])

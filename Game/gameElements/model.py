@@ -6,13 +6,15 @@ from Game.gameElements.unitMenu import unitMenu
 from Game.gameElements.button import button
 from Game.gameElements.menu import menu
 from Game.gameElements.player import player
+from Game.gameElements.enemy import worm
 
 class model:
     def __init__(self):
         self.sprites = []
         self.run = True
-        self.menuSprites = [];
-        self.gameSprites = [];
+        self.menuSprites = []
+        self.gameSprites = []
+        self.enemies = []
         self.stage = "MENU"
 
         self.setUpGame()
@@ -27,11 +29,16 @@ class model:
         self.sprites = self.gameSprites
         self.unitMenu = unitMenu(830, 0, 250, 720)
         self.map = map("")
-        center = self.map.tiles[4][4].getPlayerCenter(50, 37)
-        self.player = player(center[0], center[1], 100, 100, 100, 100, 1, 0)
+
+        playerCenter = self.map.tiles[4][4].getCenter(50, 37)
+        self.player = player(playerCenter[0], playerCenter[1], 100, 100, 100, 100, 1, 0)
+
+        wormCenter =  self.map.tiles[3][2].getCenter(64, 64)
+        self.worm = worm(wormCenter[0], wormCenter[1], 64, 64, self.map.tiles, 3, 2)
+        self.enemies.append(self.worm)
         self.addSprite(self.map)
-        self.addSprite(self.unitMenu.getStatsSprite())
         self.addSprite(self.player)
+        self.addSprite(self.worm)
 
     def setUpMenu(self):
         self.menu = menu()
@@ -44,12 +51,20 @@ class model:
     def removeSprite(self, sprite):
         self.sprites.remove(sprite)
 
+    def checkCollision(self):
+        #Attacking Enemy
+        if(self.player.damage):
+            self.player.damage = False
+            for enemy in self.enemies:
+                if(self.player.collide(enemy)):
+                    self.gameSprites.remove(enemy)
+                    self.enemies.remove(enemy)
+
     def checkClick(self, x, y):
         if self.stage == "GAME":
             tile = self.map.getSelectedTile(x, y)
-            if(tile != None and tile.unit == None):
-                center = tile.getPlayerCenter(self.player.rect.w, self.player.rect.h)
-                self.player.moveTo(center[0], center[1]);
+            center = tile.getCenter(self.player.rect.w, self.player.rect.h)
+            self.player.moveTo(center[0], center[1]);
 
         else: ## Menu is running
             for sprt in self.sprites:
@@ -63,14 +78,9 @@ class model:
     def quitGame(self):
         self.run = False
         
-    def loadGame(self):
-        pass
-
-    def saveGame(self):
-        pass
-
     def update(self):
         # Makes button clicking animation work
-        for button in self.unitMenu.getButtons():
-            button.update()
+        self.checkCollision()
+        for enemy in self.enemies:
+            enemy.update()
         self.player.update()

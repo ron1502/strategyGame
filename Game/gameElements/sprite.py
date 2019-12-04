@@ -14,8 +14,11 @@ class sprite:
 		# RECTANGLE COLOR = GREEN BY DEFAULT
 		if(color == None): self.rectColor = pygame.Color(95, 111, 58)
 		#-----------------------------------------------
+		self.img = None
 		if(sprtPath != None): self.img = self.loadImg(sprtPath)
 		self.animationCount = 0
+		self.lastAnimation = pygame.time.get_ticks()
+
 	
 	@staticmethod
 	def init(width, height, caption):
@@ -51,10 +54,14 @@ class sprite:
 		img = pygame.transform.scale(img, (self.rect.w, self.rect.h))
 		return img
 	
-	def nextAnimation(self, limit):
-		if(self.animationCount == limit):
-			self.animationCount = 0
-		else: self.animationCount += 1
+	def nextAnimation(self, spriteLimit, animationSpeed):
+                if(pygame.time.get_ticks() - self.lastAnimation >= animationSpeed):
+                        if(self.animationCount == spriteLimit):
+                                self.animationCount = 0
+                        else: self.animationCount += 1
+                        self.lastAnimation = pygame.time.get_ticks()
+                        return True
+                return False
 	
 	def getX(self):
 		return self.rect.x
@@ -70,7 +77,7 @@ class sprite:
 		pygame.draw.rect(sprite.screen, color, self.rect, width)
 
 	def drawImg(self):
-		sprite.screen.blit(self.img, self.rect)
+		if(self.img != None): sprite.screen.blit(self.img, self.rect)
 		
 	def draw(self):
 		self.drawImg()
