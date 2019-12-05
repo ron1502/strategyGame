@@ -1,5 +1,6 @@
 import pygame
 from Game.gameElements.sprite import sprite
+from Game.gameElements.lifeBar import lifeBar
 
 class player(sprite):
     RIGHT = 0
@@ -32,6 +33,7 @@ class player(sprite):
         self.standing = True
         self.lastMove = pygame.time.get_ticks()
         self.damage = False
+        self.lifeBar =  lifeBar(self.rect, self.hp)
 
     def moveTo(self, x, y):
         self.destX = x
@@ -86,9 +88,11 @@ class player(sprite):
         else:
             if(self.nextAnimation(3, 75)):
                 self.img = self.idle[self.animationCount]
+        self.lifeBar.update(self.rect, self.hp)
 
     def draw(self):
         self.drawImg()
+        self.lifeBar.draw()
             
             
             
