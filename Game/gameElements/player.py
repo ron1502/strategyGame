@@ -8,7 +8,7 @@ class player(sprite):
     def __init__(self, x, y, hp, attack, defense, skill, speed, xp):
         super().__init__(x, y, 75, 55)
         self.hp = hp
-        self.attack = attack
+        self.attackDamage = attack
         self.defense = defense
         self.speed = speed
         self.skill = skill
