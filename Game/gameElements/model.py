@@ -2,11 +2,12 @@ import json
 import pygame
 from Game.gameElements.sprite import sprite
 from Game.gameElements.map import map
-from Game.gameElements.unitMenu import unitMenu
 from Game.gameElements.button import button
 from Game.gameElements.menu import menu
+
 from Game.gameElements.player import player
 from Game.gameElements.enemy import worm
+from Game.gameElements.enemy import dragon
 
 class model:
     def __init__(self):
@@ -27,18 +28,30 @@ class model:
     def setUpGame(self):
         ## Here Loading can be perform
         self.sprites = self.gameSprites
-        self.unitMenu = unitMenu(830, 0, 250, 720)
         self.map = map("")
 
         playerCenter = self.map.tiles[4][4].getCenter(50, 37)
         self.player = player(playerCenter[0], playerCenter[1], 100, 10, 100, 100, 1, 0)
 
         wormCenter =  self.map.tiles[3][2].getCenter(64, 64)
-        self.worm = worm(wormCenter[0], wormCenter[1], 64, 64, self.map.tiles, 3, 2)
+        self.worm = worm(wormCenter[0], wormCenter[1], 64, 64)
+
+        wormCenter =  self.map.tiles[9][4].getCenter(64, 64)
+        self.worm2 =  worm(wormCenter[0], wormCenter[1], 64, 64)
+
+        dragonCenter = self.map.tiles[5][11].getCenter(70, 70)
+        self.dragon = dragon(dragonCenter[0], dragonCenter[1], 70, 70, self.map)
+        
         self.enemies.append(self.worm)
+        self.enemies.append(self.worm2)
+        self.enemies.append(self.dragon)
+
         self.addSprite(self.map)
         self.addSprite(self.player)
         self.addSprite(self.worm)
+        self.addSprite(self.worm2)
+        self.addSprite(self.dragon)
+
 
     def setUpMenu(self):
         self.menu = menu()
@@ -53,15 +66,22 @@ class model:
 
     def checkCollision(self):
         #Attacking Enemy
-        if(self.player.damage):
-            self.player.damage = False
-            for enemy in self.enemies:
-                if(self.player.collide(enemy) and not enemy.isDying):
+        for sprite in self.sprites:
+            if(sprite.type == "wall"):
+                self.player.collide(x, y, True)
+                #DRAKE: Wall sound collision can play here
+        for enemy in self.enemies:
+            if(not enemy.alive):
+                self.gameSprites.remove(enemy)
+                self.enemies.remove(enemy)
+            elif(self.player.collide(enemy) and not enemy.isDying):
+                if(enemy.isAttacking and enemy.hitAgain()):
+                    self.player.receiveAttack(enemy.attackDamage)
+                    #DRAKE: Payer being attacked 
+                if(self.player.damage):
+                    self.player.damage = False
                     enemy.receiveAttack(self.player.attackDamage)
-                if(not enemy.alive):
-                    self.gameSprites.remove(enemy)
-                    self.enemies.remove(enemy)
-
+                    #DRAKE: Enemy being attacked 
 
                     
     def checkClick(self, x, y):
@@ -83,8 +103,8 @@ class model:
         self.run = False
         
     def update(self):
-        # Makes button clicking animation work
-        self.checkCollision()
-        for enemy in self.enemies:
-            enemy.update()
-        self.player.update()
+        if(self.stage == "GAME"):
+            self.checkCollision()
+            for enemy in self.enemies:
+                enemy.update()
+            self.player.update()

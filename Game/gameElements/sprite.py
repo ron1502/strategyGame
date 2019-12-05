@@ -8,13 +8,14 @@ class sprite:
 	sWidth = 0
 	sHeight = 0
 	
-	def __init__(self, x, y, w, h, sprtPath = None, color = None):
+	def __init__(self, x, y, w, h, sprtPath = None,  type = "NoType", color = None):
 		self.rect = pygame.Rect(x, y, w, h)
 		#------------------------------------------------
 		# RECTANGLE COLOR = GREEN BY DEFAULT
 		if(color == None): self.rectColor = pygame.Color(95, 111, 58)
 		#-----------------------------------------------
 		self.img = None
+		self.type = type
 		if(sprtPath != None): self.img = self.loadImg(sprtPath)
 		self.animationCount = 0
 		self.lastAnimation = pygame.time.get_ticks()
@@ -36,14 +37,14 @@ class sprite:
 		# Returns True if collition takes place
 		collide = self.rect.colliderect(collideSprite.rect)
 		if collide and restorePos:
-			if self.moveDir == "LEFT":
+			if self.xDir == "LEFT":
 				self.rect.x = collideSprite.rect.x + collideSprite.rect.w + 1
-			elif self.moveDir == "RIGHT":
+			elif self.xDir == "RIGHT":
 				self.rect.x = collideSprite.rect.x -1 - self.rect.w
-			elif self.moveDir == "UP":
+			if self.yDir == "UP":
 				self.rect.y = collideSprite.rect.y + collideSprite.rect.h + 1
-			elif self.moveDir == "DOWN":
-				self.rect.y = collideSprite.rect.y -1 - self.rect.h
+			elif self.yDir == "DOWN":
+				self.rect.y = collideSprite.rect.y - 1 - self.rect.h
 		return collide
 
 	def loadImg(self, imgPath):

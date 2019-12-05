@@ -1,5 +1,4 @@
 from Game.gameElements.sprite import sprite
-from Game.gameElements.unit import Unit
 from Game.gameElements.player import player
 
 import pygame
@@ -78,7 +77,7 @@ class tile(sprite):
     def __init__(self, tType, x, y, w, h, imgSource = None):
         super().__init__(x, y, w, h, imgSource)
         self.type = tType
-
+    
 ##    def locateInCenter(self):
 ##        self.unit.rect.x = self.rect.x
 ##        self.unit.rect.y = self.rect.y

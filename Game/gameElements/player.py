@@ -34,6 +34,9 @@ class player(sprite):
         self.lastMove = pygame.time.get_ticks()
         self.damage = False
         self.lifeBar =  lifeBar(self.rect, self.hp)
+        self.alive = False
+        self.xDir = "RIGHT"
+        self.yDir = "DOWN"
 
     def moveTo(self, x, y):
         self.destX = x
@@ -44,7 +47,6 @@ class player(sprite):
         moveSpeed = self.speed
         if(not (distance % self.speed == 0)):
             moveSpeed = distance % self.speed
-            print("move Speed Changed" + str(moveSpeed))
         if(distance > 0):
             return moveSpeed
         else:
@@ -66,13 +68,24 @@ class player(sprite):
 
     def haveToMove(self):
         return self.destX != self.rect.x or self.destY != self.rect.y
+
+    def receiveAttack(self, damage):
+        self.hp -= damage
+        if(self.hp <= 0):
+            self.alive = False
     
     def update(self):
         if(self.haveToMove()):
             if(pygame.time.get_ticks() - self.lastMove >=  5):
                 xMove = self.move(self.rect.x, self.destX)
+                #Setting directions for updating process
+                if(xMove >= 0): self.xDir = "RIGHT"
+                else: self.xDir = "LEFT"
                 self.rect.x += xMove
-                self.rect.y += self.move(self.rect.y, self.destY)
+                yMove = self.move(self.rect.y, self.destY)
+                self.rect.y += yMove
+                if(yMove >= 0): self.xDir = "DOWN"
+                else: self.xDir = "UP"
                 self.lastMove = pygame.time.get_ticks()
             if(self.nextAnimation(5, 75)):
                 if(self.destX >= self.rect.x): self.img = self.run[player.RIGHT][self.animationCount]
