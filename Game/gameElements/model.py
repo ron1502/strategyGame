@@ -31,7 +31,7 @@ class model:
         self.map = map("")
 
         playerCenter = self.map.tiles[4][4].getCenter(50, 37)
-        self.player = player(playerCenter[0], playerCenter[1], 100, 100, 100, 100, 1, 0)
+        self.player = player(playerCenter[0], playerCenter[1], 100, 10, 100, 100, 1, 0)
 
         wormCenter =  self.map.tiles[3][2].getCenter(64, 64)
         self.worm = worm(wormCenter[0], wormCenter[1], 64, 64, self.map.tiles, 3, 2)
@@ -56,10 +56,14 @@ class model:
         if(self.player.damage):
             self.player.damage = False
             for enemy in self.enemies:
-                if(self.player.collide(enemy)):
+                if(self.player.collide(enemy) and not enemy.isDying):
+                    enemy.receiveAttack(self.player.attackDamage)
+                if(not enemy.alive):
                     self.gameSprites.remove(enemy)
                     self.enemies.remove(enemy)
 
+
+                    
     def checkClick(self, x, y):
         if self.stage == "GAME":
             tile = self.map.getSelectedTile(x, y)
