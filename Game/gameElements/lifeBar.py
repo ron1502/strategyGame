@@ -3,7 +3,7 @@ from Game.gameElements.sprite import sprite
 
 LFHEIGTH = 10
 RED = pygame.Color(222, 25, 25)
-YELOW = pygame.Color(252, 237, 31)
+YELLOW = pygame.Color(252, 237, 31)
 GREEN =  pygame.Color(67, 198, 93)
 BLACK = pygame.Color(0, 0, 0)
 
@@ -24,11 +24,11 @@ class lifeBar():
         self.border.x = spriteRect.x
         self.border.y = self.rectLife.y 
 
-        percentage = currentHP/self.fullWidth
-        self.w = self.border.w * percentage
-        if(percentage > 0.50):
+        percentage = currentHP/self.initialHP
+        self.rectLife.w = self.border.w * percentage
+        if(percentage >= 0.50):
             self.color = GREEN
-        elif(percentage > 0.30):
+        elif(percentage >= 0.30):
             self.color = YELLOW
         else:
             self.color =  RED
