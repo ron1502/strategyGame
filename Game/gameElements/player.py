@@ -56,15 +56,7 @@ class player(sprite):
         if(not self.attacking):
             self.attacking = True
             self.standing = False
-            self.animationCount = 0
-        else:
-            if(self.animationCount == 6):
-                self.standing = True
-                self.attacking =  False
-                self.animationCount = 0
-                self.damage =  True
-        return self.attacking
-            
+            self.animationCount = 0 
 
     def haveToMove(self):
         return self.destX != self.rect.x or self.destY != self.rect.y
@@ -95,8 +87,12 @@ class player(sprite):
                 self.animationCount = 0
         elif(self.attacking):
             if(self.nextAnimation(6, 75)):
-                #Extra attack limit added to know when the animation is over
-                if(self.perfAttack()):
+                if(self.animationCount == 6):
+                    self.standing = True
+                    self.attacking =  False
+                    self.animationCount = 0
+                    self.damage =  True
+                else:
                    self.img = self.attack[self.animationCount]
         else:
             if(self.nextAnimation(3, 75)):

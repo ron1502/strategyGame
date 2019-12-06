@@ -54,6 +54,13 @@ class map(sprite):
             for j in range(map.COLUMNCOUNT):
                 self.tiles[i][j].draw()
 
+    def collide(self, sprite):
+        for row in self.tiles:
+            for tile in row:
+                if(tile.type == "Wall" and sprite.collide(sprite)):
+                    return True
+        return False
+    
     # Gets tile that has been clicked on
     def getSelectedTile(self, x, y):
         for row in self.tiles:
