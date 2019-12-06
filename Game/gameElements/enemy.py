@@ -51,7 +51,7 @@ class enemy(sprite):
             
     def dropItem(self):
         dropPossibility =  random.randint(0, 100)
-        if(dropPossibility >= 0):
+        if(dropPossibility > 50):
             return item(self.rect)
         else: return None
 

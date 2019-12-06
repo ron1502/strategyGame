@@ -2,10 +2,12 @@ import pygame
 from Game.gameElements.sprite import sprite
 from Game.gameElements.lifeBar import lifeBar
 
+PLAYERHP = 100 
+
 class player(sprite):
     RIGHT = 0
     LEFT = 1
-    def __init__(self, x, y, hp, attack, defense, skill, speed, xp):
+    def __init__(self, x, y, attack, defense, skill, speed, xp, hp = PLAYERHP):
         super().__init__(x, y, 75, 55)
         self.hp = hp
         self.attackDamage = attack
@@ -51,6 +53,10 @@ class player(sprite):
             return moveSpeed
         else:
             return -moveSpeed
+    def heal(self, healingPower):
+        self.hp += healingPower
+        if(self.hp > PLAYERHP):
+            self.hp = PLAYERHP
 
     def perfAttack(self):
         if(not self.attacking):

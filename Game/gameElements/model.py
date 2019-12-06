@@ -17,7 +17,6 @@ class model:
         self.menuSprites = []
         self.gameSprites = []
 
-        self.items = []
         self.enemies = []
         self.stage = "MENU"
 
@@ -32,9 +31,9 @@ class model:
         ## Here Loading can be perform
         self.sprites = self.gameSprites
         self.map = map("")
-
+        self.items = self.map.items
         playerCenter = self.map.tiles[4][4].getCenter(50, 37)
-        self.player = player(playerCenter[0], playerCenter[1], 100, 10, 100, 100, 1, 0)
+        self.player = player(playerCenter[0], playerCenter[1], 10, 100, 100, 1, 0)
 
         wormCenter =  self.map.tiles[3][2].getCenter(64, 64)
         self.worm = worm(wormCenter[0], wormCenter[1], 64, 64)
@@ -104,25 +103,33 @@ class model:
         for enemy in self.enemies:
             if(not enemy.alive):
                 item =  enemy.dropItem()
-                if(item != None):
-                    self.items.append(item)
-                    self.sprites.append(item)
                 self.gameSprites.remove(enemy)
                 self.enemies.remove(enemy)
+                if(item != None):
+                    self.items.append(item)
+
             elif(self.player.collide(enemy) and not enemy.isDying):
                 if(enemy.isAttacking and enemy.hitAgain()):
                     self.player.receiveAttack(enemy.attackDamage)
                     #DRAKE: Payer being attacked 
                 if(self.player.attacking):
                     enemy.receiveAttack(self.player.attackDamage)
-                    #DRAKE: Enemy being attacked 
+                    #DRAKE: Enemy being attacked
 
                     
     def checkClick(self, x, y):
         if self.stage == "GAME":
+            for item in self.items:
+                if(item.mouseInIt(x, y)):
+                    self.player.heal(item.heallingEffect())
+                    self.items.remove(item)
+                    #DRAKE: Healing sound can play here
+                    return
+
             tile = self.map.getSelectedTile(x, y)
             center = tile.getCenter(self.player.rect.w, self.player.rect.h)
-            self.player.moveTo(center[0], center[1]);
+            self.player.moveTo(center[0], center[1])
+
 
         else: ## Menu is running
             for sprt in self.sprites:
@@ -133,6 +140,7 @@ class model:
                             self.sprites = self.gameSprites
                         elif(self.menu.action == "Q"):
                             self.quitGame()
+
     def quitGame(self):
         self.run = False
         

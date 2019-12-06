@@ -5,8 +5,7 @@ class item(sprite):
         super().__init__(enemyR.center[0] - w//2,
                          enemyR.center[1] - h//2,
                          w, h, r"\resources\sprites\items\redPotion.png")
-        print(enemyR.center);
-    def hellingEffect(self):
+    def heallingEffect(self):
         return 20
 
     def update(self):
