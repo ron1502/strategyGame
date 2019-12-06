@@ -65,6 +65,11 @@ class tile(sprite):
                 self.unit.rect.y += (self.rect.h - self.unit.rect.h)//2
         # Define image scale for cases where sprite is bigger than tile
 
+    def getPlayerCenter(self, w, h):
+        x = self.rect.x + (self.rect.w - w)//2
+        y = self.rect.y + (self.rect.h - h)//2
+        return (x, y)
+
     def draw(self):
         self.update()
         self.drawSquare()

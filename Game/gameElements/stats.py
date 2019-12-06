@@ -40,3 +40,6 @@ class stats(sprite):
         self.screen.blit(self.defense, (self.rect.x + 20, self.rect.y + stats.TXTSPACING*4))
         self.screen.blit(self.skill, (self.rect.x + 20, self.rect.y + stats.TXTSPACING*5))
         self.screen.blit(self.xp, (self.rect.x + 20, self.rect.y + stats.TXTSPACING*6))
+
+    def update(self):
+        pass

@@ -8,13 +8,18 @@ class sprite:
 	sWidth = 0
 	sHeight = 0
 	
-	def __init__(self, x, y, w, h, sprtPath = None, color = None):
+	def __init__(self, x, y, w, h, sprtPath = None,  type = "NoType", color = None):
 		self.rect = pygame.Rect(x, y, w, h)
 		#------------------------------------------------
 		# RECTANGLE COLOR = GREEN BY DEFAULT
 		if(color == None): self.rectColor = pygame.Color(95, 111, 58)
 		#-----------------------------------------------
-		if(sprtPath != None): self.loadImg(sprtPath)
+		self.img = None
+		self.type = type
+		if(sprtPath != None): self.img = self.loadImg(sprtPath)
+		self.animationCount = 0
+		self.lastAnimation = pygame.time.get_ticks()
+
 	
 	@staticmethod
 	def init(width, height, caption):
@@ -32,29 +37,38 @@ class sprite:
 		# Returns True if collition takes place
 		collide = self.rect.colliderect(collideSprite.rect)
 		if collide and restorePos:
-			if self.moveDir == "LEFT":
+			if self.xDir == "LEFT":
 				self.rect.x = collideSprite.rect.x + collideSprite.rect.w + 1
-			elif self.moveDir == "RIGHT":
+			elif self.xDir == "RIGHT":
 				self.rect.x = collideSprite.rect.x -1 - self.rect.w
-			elif self.moveDir == "UP":
+			if self.yDir == "UP":
 				self.rect.y = collideSprite.rect.y + collideSprite.rect.h + 1
-			elif self.moveDir == "DOWN":
-				self.rect.y = collideSprite.rect.y -1 - self.rect.h
+			elif self.yDir == "DOWN":
+				self.rect.y = collideSprite.rect.y - 1 - self.rect.h
 		return collide
 
 	def loadImg(self, imgPath):
 		# Turns image path into an absolute path using the current working directory
 		# Loads image and rescale using the dimension defined in self.rect
 		imgPath = os.getcwd() + imgPath
-		self.init(self.sWidth, self.sHeight, "Test")
-		self.img = pygame.image.load(imgPath).convert_alpha()
-		self.img = pygame.transform.scale(self.img, (self.rect.w, self.rect.h))
+		img = pygame.image.load(imgPath).convert_alpha()
+		img = pygame.transform.scale(img, (self.rect.w, self.rect.h))
+		return img
+	
+	def nextAnimation(self, spriteLimit, animationSpeed):
+                if(pygame.time.get_ticks() - self.lastAnimation >= animationSpeed):
+                        if(self.animationCount == spriteLimit):
+                                self.animationCount = 0
+                        else: self.animationCount += 1
+                        self.lastAnimation = pygame.time.get_ticks()
+                        return True
+                return False
 	
 	def getX(self):
 		return self.rect.x
 
 	def mouseInIt(self, x, y):
-                return self.rect.collidepoint(x,y)
+		return self.rect.collidepoint(x,y)
 	
 	def getY(self):
 		return self.y
@@ -64,11 +78,11 @@ class sprite:
 		pygame.draw.rect(sprite.screen, color, self.rect, width)
 
 	def drawImg(self):
-		sprite.screen.blit(self.img, self.rect)
+		if(self.img != None): sprite.screen.blit(self.img, self.rect)
 		
 	def draw(self):
 		self.drawImg()
 	
 	def printData(self):
 		print("SpriteData: \nX: " + str(self.rect.x) + "\nY: " + str(self.rect.y) + "\nW:" + str(self.rect.w) + "\nH: " + str(self.rect.h))
-																																# Fixed Error
+																					
