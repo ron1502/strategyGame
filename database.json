@@ -1,0 +1,23 @@
+{
+	"enemies" : [
+		{
+			"name" : "Worm",
+			"type" : 0,
+			"xLoc" : 1,
+			"yLoc" : 2
+		},
+		{
+			"name" : "Dragon",
+			"type" : 1,
+			"xLoc" : 3,
+			"yLoc" : 4
+		}
+	],
+	
+	"particles" : [{
+			"name" : "Particle",
+			"xLoc" : 5,
+			"yLoc" : 6
+		}
+	]
+}
