@@ -60,7 +60,7 @@ class model:
         
     def addSprite(self, sprite):
         self.sprites.append(sprite)
-
+ 
     def removeSprite(self, sprite):
         self.sprites.remove(sprite)
 

@@ -2,6 +2,7 @@ from Game.gameElements.controller import controller
 from Game.gameElements.model import model
 from Game.gameElements.view import view
 
+
 class Game:
 	def __init__(self):
 		self.model = model()

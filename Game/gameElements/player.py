@@ -97,7 +97,7 @@ class player(sprite):
             if(self.nextAnimation(6, 75)):
                 #Extra attack limit added to know when the animation is over
                 if(self.perfAttack()):
-                   self.img = self.attack[self.animationCount]
+                   self.img = self.attack[self.animationCount] 
         else:
             if(self.nextAnimation(3, 75)):
                 self.img = self.idle[self.animationCount]

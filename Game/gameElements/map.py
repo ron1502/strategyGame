@@ -3,6 +3,7 @@ from Game.gameElements.player import player
 
 import pygame
 import random
+pygame.mixer.init()
 
 class map(sprite):
     GRIDCOLOR = pygame.Color(0, 0, 0)
@@ -18,6 +19,9 @@ class map(sprite):
     #Map Margin
     TOPMARGIN = 10
     LEFTMARGIN = 65
+
+
+    pygame.mixer.music.load('')
     
     def __init__(self, filename):
         super().__init__(0, 0, 0, 0)
@@ -26,6 +30,7 @@ class map(sprite):
         
         tile.MAPTOPMARGIN = map.TOPMARGIN
         tile.MAPLEFTMARGIN = map.LEFTMARGIN
+        
         
         ## Tile initialization (Can be used for the initialization of tiles in from  jsonData)
         # In that case map dimension can be access with no problem through map

@@ -54,7 +54,14 @@ class sprite:
 		img = pygame.image.load(imgPath).convert_alpha()
 		img = pygame.transform.scale(img, (self.rect.w, self.rect.h))
 		return img
-	
+
+	def loadsnd(self, sndpath)
+		# Turns sound path into an absolute path using the current working directory
+		sndpath = os.getcwd() + sndpath
+		snd = pygame.mixer.load(sndpath)
+		return snd
+
+
 	def nextAnimation(self, spriteLimit, animationSpeed):
                 if(pygame.time.get_ticks() - self.lastAnimation >= animationSpeed):
                         if(self.animationCount == spriteLimit):
