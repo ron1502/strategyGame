@@ -24,6 +24,18 @@ class model:
         self.selectedTile = None
         self.tileControlledUnit = None
         self.tileDefendingUnit = None
+        
+        self.database()
+        
+    def database(self):
+        print("Data Base Initialized")
+        with open("database.json") as f:
+            data = json.load(f)
+        
+        for enemy in data["enemies"]:
+            print(enemy)
+        for particle in data["particles"]:
+            print(particle)
 
     def setUpGame(self):
         ## Here Loading can be perform
@@ -51,7 +63,6 @@ class model:
         self.addSprite(self.worm)
         self.addSprite(self.worm2)
         self.addSprite(self.dragon)
-
 
     def setUpMenu(self):
         self.menu = menu()
@@ -82,8 +93,7 @@ class model:
                     self.player.damage = False
                     enemy.receiveAttack(self.player.attackDamage)
                     #DRAKE: Enemy being attacked 
-
-                    
+ 
     def checkClick(self, x, y):
         if self.stage == "GAME":
             tile = self.map.getSelectedTile(x, y)
@@ -99,6 +109,7 @@ class model:
                             self.sprites = self.gameSprites
                         elif(self.menu.action == "Q"):
                             self.quitGame()
+                            
     def quitGame(self):
         self.run = False
         
