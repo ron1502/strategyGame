@@ -3,6 +3,7 @@ import pygame
 from Game.gameElements.sprite import sprite
 from Game.gameElements.lifeBar import lifeBar
 
+
 pygame.mixer.init()
 
 WORMHP = 30
@@ -14,7 +15,7 @@ DRAGONHP = 70
 RIGHT = 1
 LEFT = 0
 
-deathsound = pygame.mixer.Sound((r"\resources\sounds\effects\monsterpain.wav"))
+
 
 class enemy(sprite):
     def __init__(self, x, y, w, h, hp, hitInterval):
@@ -41,13 +42,16 @@ class enemy(sprite):
         else: return False
 
     def receiveAttack(self, damage):
+        #self.deathsound = ('monsterpain.ogg')
+        #self.loadsnd(r"\resources\sounds\effects\monsterpain.wav")
+
         self.hp -= damage
         if(self.hp <= 0):
             self.animationCount = 0
             self.isDying = True
             self.isIdle = False
             self.isAtticking =  False
-            self.deathsound.play()
+            #self.deathsound.play()
 
     def draw(self):
         self.lifeBar.draw()

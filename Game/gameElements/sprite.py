@@ -1,6 +1,8 @@
 import pygame
 import os
 import random
+pygame.mixer.init()
+
 
 class sprite:
 	screen = None
@@ -19,6 +21,8 @@ class sprite:
 		if(sprtPath != None): self.img = self.loadImg(sprtPath)
 		self.animationCount = 0
 		self.lastAnimation = pygame.time.get_ticks()
+		#self.loadmusic(r"\resources\sounds\music\gamemusic0.wav")
+        #self.pygame.mixer.music.play(-1)
 
 	
 	@staticmethod
@@ -55,11 +59,17 @@ class sprite:
 		img = pygame.transform.scale(img, (self.rect.w, self.rect.h))
 		return img
 
-	def loadsnd(self, sndpath)
+	def loadsnd(self, sndpath):
 		# Turns sound path into an absolute path using the current working directory
 		sndpath = os.getcwd() + sndpath
-		snd = pygame.mixer.load(sndpath)
+		snd = pygame.mixer.Sound(sndpath)
 		return snd
+
+	def loadmusic(self, mscpath):
+		# Turns sound path into an absolute path using the current working directory
+		mscpath = os.getcwd() + mscpath
+		msc = pygame.mixer.music.load(mscpath)
+		return msc
 
 
 	def nextAnimation(self, spriteLimit, animationSpeed):
