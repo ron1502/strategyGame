@@ -4,6 +4,8 @@ from Game.gameElements.player import player
 import pygame
 import random
 
+pygame.mixer.init()
+
 class map(sprite):
     GRIDCOLOR = pygame.Color(0, 0, 0)
     
@@ -20,13 +22,10 @@ class map(sprite):
     LEFTMARGIN = 65
 
 
-    
     def __init__(self, filename):
         super().__init__(0, 0, 0, 0)
 
         self.tiles=[]
-
-        
 
         tile.MAPTOPMARGIN = map.TOPMARGIN
         tile.MAPLEFTMARGIN = map.LEFTMARGIN
@@ -83,6 +82,8 @@ class map(sprite):
                 self.tiles[5][x].sType(8)
             else:
                 self.tiles[5][x].sType(7)
+
+
             
 
     def drawGridLines(self):

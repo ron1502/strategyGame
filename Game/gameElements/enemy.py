@@ -42,8 +42,8 @@ class enemy(sprite):
         else: return False
 
     def receiveAttack(self, damage):
-        #self.deathsound = ('monsterpain.ogg')
-        #self.loadsnd(r"\resources\sounds\effects\monsterpain.wav")
+        #self.deathsound = pygame.mixer.Sound('monsterpain.wav')
+        #self.loadsnd(r"monsterpain.wav")
 
         self.hp -= damage
         if(self.hp <= 0):
@@ -51,7 +51,8 @@ class enemy(sprite):
             self.isDying = True
             self.isIdle = False
             self.isAtticking =  False
-            #self.deathsound.play()
+            self.deathsound = self.loadsnd("\monsterpain.wav")
+            self.deathsound.play()
 
     def draw(self):
         self.lifeBar.draw()

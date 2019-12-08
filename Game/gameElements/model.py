@@ -9,6 +9,7 @@ from Game.gameElements.player import player
 from Game.gameElements.enemy import worm
 from Game.gameElements.enemy import dragon
 
+
 class model:
     def __init__(self):
         self.sprites = []
@@ -26,6 +27,8 @@ class model:
         self.tileDefendingUnit = None
         
         self.database()
+
+        
         
     def database(self):
         print("Data Base Initialized")
