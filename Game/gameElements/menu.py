@@ -17,8 +17,8 @@ class menu:
         self.action = None
         self.go = button(465, 150, 150, "S", "Start Game", self.goFunct, menu.LIGHTGREY)
         self.quit = button(465, 250, 150, "S", "Quit", self.quitFunct, menu.LIGHTGREY)
-        self.background = loadImg(r"\resources\sprites\menu\background.png")
-        self.background_rect = background.get_rect()
+        #self.background = loadImg(r"\resources\sprites\menu\background.png")
+        #self.background_rect = background.get_rect()
 
     def goFunct(self):
         self.action = "G"

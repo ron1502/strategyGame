@@ -55,11 +55,16 @@ class player(sprite):
             return -moveSpeed
     def heal(self, healingPower):
         self.hp += healingPower
+        #add sound
         if(self.hp > PLAYERHP):
+            self.healsnd = self.loadsnd(r'\resources\sounds\effects\potion.wav')
+            self.healsnd.play()
             self.hp = PLAYERHP
 
     def perfAttack(self):
         if(not self.attacking):
+            self.misssnd = self.loadsnd(r'\resources\sounds\effects\swordmiss.wav')
+            self.misssnd.play()
             self.attacking = True
             self.standing = False
             self.animationCount = 0 
@@ -69,6 +74,8 @@ class player(sprite):
 
     def receiveAttack(self, damage):
         self.hp -= damage
+        self.painsnd = self.loadsnd(r'\resources\sounds\effects\pain.wav')
+        self.painsnd.play()
         if(self.hp <= 0):
             self.alive = False
     

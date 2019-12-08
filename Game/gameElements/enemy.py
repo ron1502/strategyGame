@@ -42,13 +42,16 @@ class enemy(sprite):
         if(pygame.time.get_ticks() - self.lastDamage >= PATTACKDURATION):
             self.lastDamage = pygame.time.get_ticks()
             self.hp -= damage
+            self.attacksnd = self.loadsnd(r'\resources\sounds\effects\swordhit.wav')
+            self.attacksnd.play()
         if(self.hp <= 0):
             self.animationCount = 0
             self.isDying = True
             self.isIdle = False
             self.isAtticking =  False
-            #DRAKE: Dying sound
-            
+            self.dyingsnd = self.loadsnd(r'\resources\sounds\effects\monsterpain.wav')
+            self.dyingsnd.play()
+
     def dropItem(self):
         dropPossibility =  random.randint(0, 100)
         if(dropPossibility > 50):
