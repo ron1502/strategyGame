@@ -2,10 +2,12 @@ import pygame
 from Game.gameElements.sprite import sprite
 from Game.gameElements.lifeBar import lifeBar
 
+PLAYERHP = 100 
+
 class player(sprite):
     RIGHT = 0
     LEFT = 1
-    def __init__(self, x, y, hp, attack, defense, skill, speed, xp):
+    def __init__(self, x, y, attack, defense, skill, speed, xp, hp = PLAYERHP):
         super().__init__(x, y, 75, 55)
         self.hp = hp
         self.attackDamage = attack
@@ -51,20 +53,16 @@ class player(sprite):
             return moveSpeed
         else:
             return -moveSpeed
+    def heal(self, healingPower):
+        self.hp += healingPower
+        if(self.hp > PLAYERHP):
+            self.hp = PLAYERHP
 
     def perfAttack(self):
         if(not self.attacking):
             self.attacking = True
             self.standing = False
-            self.animationCount = 0
-        else:
-            if(self.animationCount == 6):
-                self.standing = True
-                self.attacking =  False
-                self.animationCount = 0
-                self.damage =  True
-        return self.attacking
-            
+            self.animationCount = 0 
 
     def haveToMove(self):
         return self.destX != self.rect.x or self.destY != self.rect.y
@@ -95,9 +93,13 @@ class player(sprite):
                 self.animationCount = 0
         elif(self.attacking):
             if(self.nextAnimation(6, 75)):
-                #Extra attack limit added to know when the animation is over
-                if(self.perfAttack()):
-                   self.img = self.attack[self.animationCount] 
+                if(self.animationCount == 6):
+                    self.standing = True
+                    self.attacking =  False
+                    self.animationCount = 0
+                    self.damage =  True
+                else:
+                   self.img = self.attack[self.animationCount]
         else:
             if(self.nextAnimation(3, 75)):
                 self.img = self.idle[self.animationCount]
@@ -106,3 +108,6 @@ class player(sprite):
     def draw(self):
         self.drawImg()
         self.lifeBar.draw()
+            
+            
+            
