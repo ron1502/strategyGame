@@ -3,6 +3,7 @@ from Game.gameElements.player import player
 
 import pygame
 import random
+white= (255, 255, 255)
 
 class map(sprite):
     GRIDCOLOR = pygame.Color(0, 0, 0)
@@ -18,6 +19,7 @@ class map(sprite):
     #Map Margin
     TOPMARGIN = 10
     LEFTMARGIN = 65
+
     
     def __init__(self, filename):
         super().__init__(0, 0, 0, 0)
@@ -38,48 +40,79 @@ class map(sprite):
                 newRow.append(tile(1, xPos, yPos, map.GWIDTH, map.GHEIGHT))
             self.tiles.append(newRow)
         for x in range (15):
-            self.tiles[0][x].sType(1)
+            if x== 1:
+                self.tiles[0][x].sType(13)
+            elif x == 4 or x == 9:
+                self.tiles[0][x].sType(12)
+            else:
+                self.tiles[0][x].sType(1)
         for x in range (15):
-            if ( x== 0):
-                self.tiles[1][x].sType(2)
-            elif ( x== 2):
-                self.tiles[1][x].sType(3)
-            elif ( x== 4):
-                self.tiles[1][x].sType(2)
+            if x == 1:
+                self.tiles[1][x].sType(14)
+            elif x == 3 or x == 12:
+                self.tiles[1][x].sType(12)
             else:
                 self.tiles[1][x].sType(1)
         for x in range (15):
-            if ( x== 1):
-                self.tiles[2][x].sType(2)
-            elif ( x== 2):
-                self.tiles[2][x].sType(6)
-            elif ( x== 3):
-                self.tiles[2][x].sType(5)
-            elif ( x== 6):
-                self.tiles[2][x].sType(7)
-            else:
-                self.tiles[2][x].sType(1)
+            self.tiles[2][x].sType(1)
         for x in range (15):
-            if ( x== 6):
-                self.tiles[3][x].sType(8)
+            if ( x== 0):
+                self.tiles[3][x].sType(2)                
+            elif ( x== 2):
+                self.tiles[3][x].sType(3)
+            elif ( x== 4):
+                self.tiles[3][x].sType(2)
+                self.tiles[3][x].sType(4)
             else:
                 self.tiles[3][x].sType(1)
         for x in range (15):
-            if ( x == 5):
-                self.tiles[4][x].sType(9)
-            elif( x == 6):
-                self.tiles[4][x].sType(10)
-            elif ( x == 7):
-                self.tiles[4][x].sType(9)
+            if ( x== 1):
+                self.tiles[4][x].sType(2)
+            elif ( x== 2):
+                self.tiles[4][x].sType(6)
+            elif ( x== 3):
+                self.tiles[4][x].sType(5)
+            elif x == 4:
+                self.tiles[4][x].sType(12)
+            elif ( x== 6):
+                self.tiles[4][x].sType(7)
+            elif x == 9:
+                self.tiles[4][x].sType(13)
             else:
                 self.tiles[4][x].sType(1)
         for x in range (15):
-            if ( x == 6):
+            if ( x== 6):
                 self.tiles[5][x].sType(8)
+            elif x == 9:
+                self.tiles[5][x].sType(14)
             else:
-                self.tiles[5][x].sType(7)
-
-
+                self.tiles[5][x].sType(1)
+        for x in range (15):
+            if ( x == 5):
+                self.tiles[6][x].sType(9)
+            elif( x == 6):
+                self.tiles[6][x].sType(10)
+            elif ( x == 7):
+                self.tiles[6][x].sType(9)
+            else:
+                self.tiles[6][x].sType(1)
+        for x in range (15):
+            if ( x== 9):
+                self.tiles[7][x].sType(11)
+            elif ( x == 6):
+                self.tiles[7][x].sType(8)
+            else:
+                self.tiles[7][x].sType(7)
+        for x in range (15):
+            if ( x== 8 or x==9 or x==10):
+                self.tiles[8][x].sType(1)
+            else:
+                self.tiles[8][x].sType(8)
+        for x in range (15):
+            if (x==8 or x==9 or x==10):
+                self.tiles[9][x].sType(7)
+            else:
+                self.tiles[9][x].sType(8)
     def drawGridLines(self):
         yLimit = map.GHEIGHT * map.ROWCOUNT
         xLimit = map.GWIDTH * map.COLUMNCOUNT
@@ -168,7 +201,11 @@ class tile(sprite):
             self.img = self.loadImg(r"\resources\sprites\map\rock2.png")
         if (t == 10):
             self.img = self.loadImg(r"\resources\sprites\map\water2.png")
-
-
-
-
+        if (t == 11):
+            self.img = self.loadImg(r"\resources\sprites\map\brigde.png")
+        if (t == 12):
+            self.img = self.loadImg(r"\resources\sprites\map\flower.png")
+        if (t == 13):
+            self.img = self.loadImg(r"\resources\sprites\map\tree1.png")
+        if (t == 14):
+            self.img = self.loadImg(r"\resources\sprites\map\tree2.png")
