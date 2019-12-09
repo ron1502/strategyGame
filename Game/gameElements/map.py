@@ -21,13 +21,12 @@ class map(sprite):
     LEFTMARGIN = 65
 
     
-    def __init__(self, filename):
+    def __init__(self, mapData):
         super().__init__(0, 0, 0, 0)
 
         self.tiles = []
         self.items = []
-        tile.MAPTOPMARGIN = map.TOPMARGIN
-        tile.MAPLEFTMARGIN = map.LEFTMARGIN
+
         
         ## Tile initialization (Can be used for the initialization of tiles in from  jsonData)
         # In that case map dimension can be access with no problem through map
@@ -37,7 +36,7 @@ class map(sprite):
             newRow = []
             for j in range(map.COLUMNCOUNT):
                 xPos = (map.GWIDTH * j)
-                newRow.append(tile(1, xPos, yPos, map.GWIDTH, map.GHEIGHT))
+                newRow.append(tile(xPos, yPos, map.GWIDTH, map.GHEIGHT, mapData[i][j]))
             self.tiles.append(newRow)
         for x in range (15):
             if x== 1:
@@ -246,7 +245,7 @@ class map(sprite):
     def collide(self, sprite):
         for row in self.tiles:
             for tile in row:
-                if(tile.type == "Wall" and sprite.collide(sprite)):
+                if(tile.type >= 4 and tile.collide(sprite)):
                     return True
         return False
     
@@ -257,6 +256,16 @@ class map(sprite):
                 if(tile.mouseInIt(x, y)): return tile
         return None
 
+    def getTileAt(self, x, y):
+        print("Grid Coordinates ROW: {" + str(y//map.GHEIGHT) + "} COLUMN: {" + str(x//map.GWIDTH) + "}")
+        return self.tiles[y//map.GHEIGHT][x//map.GWIDTH]
+
+    def getTiles(self):
+        tileArray = []
+        for row in self.tiles:
+            tileArray += row
+        return tileArray
+
     def draw(self):
         self.drawTileContent()
         self.drawGridLines()
@@ -266,24 +275,54 @@ class map(sprite):
     def update(self):
         pass
 
+GRASS0 = 0
+GRASS1 = 1
+GRASS2 = 2
+BRIDGE = 3
+STAIR0 = 4
+STAIR1 = 5
+STAIR2 = 6
+STAIR3 = 7
+WALLWATER0 = 8
+WALLWATER1 = 9
+WALLWATER2 = 10
+WALLWATER3 = 11
+
+ROCK = 4
+ROCK2 = 5
+CAVE = 6
+STILLW = 7
+WATER1 = 8
+WATER2 = 9
+
+
 class tile(sprite):
     BGCOLOR = pygame.Color(95, 111, 58)
     SBGCOLOR = pygame.Color(144, 159, 67)
     MAPTOPMARGIN = 0
     MAPLEFTMARGIN = 0
-    
-    def __init__(self, tType, x, y, w, h, imgSource = None):
-        super().__init__(x, y, w, h, imgSource)
-        self.type = tType
-    
-##    def locateInCenter(self):
-##        self.unit.rect.x = self.rect.x
-##        self.unit.rect.y = self.rect.y
-##        if(self.unit.rect.w <= self.rect.w):
-##            if(self.unit.rect.h <= self.rect.h):
-##                self.unit.rect.x += (self.rect.w - self.unit.rect.w)//2
-##                self.unit.rect.y += (self.rect.h - self.unit.rect.h)//2
 
+    TYPE = None
+    
+    def __init__(self, x, y, w, h, tType):
+        super().__init__(x, y, w, h)
+        if tile.TYPE == None:
+            tile.TYPE = []
+            stillWater = []
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\Grass0.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\Grass1.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\Grass2.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\bridge.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs0.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs1.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs2.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs3.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\wallWater0.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\wallWater1.png"))
+        self.type = tType
+       # if(self.type == STILLW):  self.img = tile.TYPE[STILLW][0]
+        self.img = tile.TYPE[tType]
+        
     def getCenter(self, w, h):
         x = self.rect.x + (self.rect.w - w)//2
         y = self.rect.y + (self.rect.h - h)//2
