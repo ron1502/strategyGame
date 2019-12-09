@@ -85,15 +85,24 @@ class map(sprite):
     def update(self):
         pass
 
-GRASS = 0
-BRIDGE = 1
-STAIR = 2
-STAIR2 = 3
+GRASS0 = 0
+GRASS1 = 1
+GRASS2 = 2
+BRIDGE = 3
+STAIR0 = 4
+STAIR1 = 5
+STAIR2 = 6
+STAIR3 = 7
+WALLWATER0 = 8
+WALLWATER1 = 9
+WALLWATER2 = 10
+WALLWATER3 = 11
+
 ROCK = 4
 ROCK2 = 5
 CAVE = 6
-STAIR2 = 7
-WATER = 8
+STILLW = 7
+WATER1 = 8
 WATER2 = 9
 
 
@@ -109,17 +118,19 @@ class tile(sprite):
         super().__init__(x, y, w, h)
         if tile.TYPE == None:
             tile.TYPE = []
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\grass.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\brigde1.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stair.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stair2.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\rock1.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\rock2.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\cave.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\water.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\water2.png"))
-
+            stillWater = []
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\Grass0.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\Grass1.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\Grass2.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\bridge.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs0.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs1.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs2.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs3.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\wallWater0.png"))
+            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\wallWater1.png"))
         self.type = tType
+       # if(self.type == STILLW):  self.img = tile.TYPE[STILLW][0]
         self.img = tile.TYPE[tType]
         
     def getCenter(self, w, h):
@@ -128,6 +139,9 @@ class tile(sprite):
         return (x, y)
 
     def draw(self):
+        if(self.type == STILLW):
+            if(self.nextAnimation(1, 300)):
+                self.img = tile.TYPE[STILLW][self.animationCount]
         self.drawImg()
 
     def update(self):
