@@ -2,12 +2,14 @@ import random
 import pygame
 from Game.gameElements.sprite import sprite
 from Game.gameElements.lifeBar import lifeBar
+from Game.gameElements.item import item
 
+PATTACKDURATION = 450
 
 WORMHP = 30
 WORMATTACK = 5
 
-DRAGONATTACK = 15
+DRAGONATTACK = 10
 DRAGONSPEED = 10
 DRAGONHP = 70
 RIGHT = 1
@@ -28,6 +30,7 @@ class enemy(sprite):
 
         self.lastAttack = pygame.time.get_ticks()
         self.lastHit = pygame.time.get_ticks()
+        self.lastDamage = pygame.time.get_ticks()
         
     def hitAgain(self):
         if(pygame.time.get_ticks() - self.lastHit >= self.hitInterval):
@@ -36,13 +39,21 @@ class enemy(sprite):
         else: return False
 
     def receiveAttack(self, damage):
-        self.hp -= damage
+        if(pygame.time.get_ticks() - self.lastDamage >= PATTACKDURATION):
+            self.lastDamage = pygame.time.get_ticks()
+            self.hp -= damage
         if(self.hp <= 0):
             self.animationCount = 0
             self.isDying = True
             self.isIdle = False
             self.isAtticking =  False
             #DRAKE: Dying sound
+            
+    def dropItem(self):
+        dropPossibility =  random.randint(0, 100)
+        if(dropPossibility > 50):
+            return item(self.rect)
+        else: return None
 
     def draw(self):
         self.lifeBar.draw()
@@ -56,6 +67,7 @@ class dragon(enemy):
         self.walk.append([self.loadImg(r"\resources\sprites\Dragon\walk\L00.png"), self.loadImg(r"\resources\sprites\Dragon\walk\L01.png")])
         self.walk.append([self.loadImg(r"\resources\sprites\Dragon\walk\00.png"), self.loadImg(r"\resources\sprites\Dragon\walk\01.png")])
 
+        self.attackDamage = attack
         self.attack = []
         self.attack.append([self.loadImg(r"\resources\sprites\Dragon\attack\L00.png"), self.loadImg(r"\resources\sprites\Dragon\attack\L01.png")])
         self.attack.append([self.loadImg(r"\resources\sprites\Dragon\attack\00.png"), self.loadImg(r"\resources\sprites\Dragon\attack\01.png")])
@@ -64,16 +76,23 @@ class dragon(enemy):
 
         self.map = map
 
-        self.direction = RIGHT
+        self.direction = random.choice([LEFT, RIGHT])
 
     def isOutofScreen(self):
         return (self.rect.x + self.rect.w >= sprite.sWidth)  or (self.rect.x <= 0)
     
     def update(self):
         self.lifeBar.update(self.rect, self.hp)
+        self.lifeBar.update(self.rect, self.hp)
+        if(pygame.time.get_ticks() - self.lastAttack >= 4000):  
+            self.lastAttack = pygame.time.get_ticks()
+            self.isAttacking = True
+            self.animationCount = -1
 
-        if(self.isWalking):
-            if(self.nextAnimation(1, 100)):
+        if(self.isDying):
+            self.alive = False
+        elif(self.isWalking):
+            if(self.nextAnimation(1, 125)):
                 if(self.direction == RIGHT):
                     self.rect.x += DRAGONSPEED
                     if(self.map.collide(self) or self.isOutofScreen()):
@@ -82,11 +101,12 @@ class dragon(enemy):
                     self.rect.x -= DRAGONSPEED
                     if(self.map.collide(self) or self.isOutofScreen()):
                         self.direction = RIGHT
-                self.img = self.walk[self.direction][self.animationCount]
-                
-                
+                if(self.isAttacking):
+                    self.img = self.attack[self.direction][self.animationCount]
+                    if(pygame.time.get_ticks() - self.lastAttack >= 2000): self.isAttacking = False
+                elif(self.isWalking): self.img = self.walk[self.direction][self.animationCount]
 
-        
+                
 
 class worm(enemy):
     def __init__(self, x, y, w, h, attack = WORMATTACK):

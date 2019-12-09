@@ -22,8 +22,8 @@ class map(sprite):
     def __init__(self, filename):
         super().__init__(0, 0, 0, 0)
 
-        self.tiles=[]
-        
+        self.tiles = []
+        self.items = []
         tile.MAPTOPMARGIN = map.TOPMARGIN
         tile.MAPLEFTMARGIN = map.LEFTMARGIN
         
@@ -96,6 +96,13 @@ class map(sprite):
             for j in range(map.COLUMNCOUNT):
                 self.tiles[i][j].draw()
 
+    def collide(self, sprite):
+        for row in self.tiles:
+            for tile in row:
+                if(tile.type == "Wall" and sprite.collide(sprite)):
+                    return True
+        return False
+    
     # Gets tile that has been clicked on
     def getSelectedTile(self, x, y):
         for row in self.tiles:
@@ -106,6 +113,8 @@ class map(sprite):
     def draw(self):
         self.drawTileContent()
         self.drawGridLines()
+        for item in self.items:
+            item.draw()
 
     def update(self):
         pass
