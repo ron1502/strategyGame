@@ -37,6 +37,48 @@ class map(sprite):
                 xPos = (map.GWIDTH * j)
                 newRow.append(tile(1, xPos, yPos, map.GWIDTH, map.GHEIGHT))
             self.tiles.append(newRow)
+        for x in range (15):
+            self.tiles[0][x].sType(1)
+        for x in range (15):
+            if ( x== 0):
+                self.tiles[1][x].sType(2)
+            elif ( x== 2):
+                self.tiles[1][x].sType(3)
+            elif ( x== 4):
+                self.tiles[1][x].sType(2)
+            else:
+                self.tiles[1][x].sType(1)
+        for x in range (15):
+            if ( x== 1):
+                self.tiles[2][x].sType(2)
+            elif ( x== 2):
+                self.tiles[2][x].sType(6)
+            elif ( x== 3):
+                self.tiles[2][x].sType(5)
+            elif ( x== 6):
+                self.tiles[2][x].sType(7)
+            else:
+                self.tiles[2][x].sType(1)
+        for x in range (15):
+            if ( x== 6):
+                self.tiles[3][x].sType(8)
+            else:
+                self.tiles[3][x].sType(1)
+        for x in range (15):
+            if ( x == 5):
+                self.tiles[4][x].sType(9)
+            elif( x == 6):
+                self.tiles[4][x].sType(10)
+            elif ( x == 7):
+                self.tiles[4][x].sType(9)
+            else:
+                self.tiles[4][x].sType(1)
+        for x in range (15):
+            if ( x == 6):
+                self.tiles[5][x].sType(8)
+            else:
+                self.tiles[5][x].sType(7)
+            
 
     def drawGridLines(self):
         yLimit = map.GHEIGHT * map.ROWCOUNT
@@ -101,7 +143,30 @@ class tile(sprite):
         return (x, y)
 
     def draw(self):
-        self.drawSquare()
+        self.drawImg()
 
     def update(self):
         pass
+    def sType(self, t):
+        if (t == 1):
+            self.img = self.loadImg(r"\resources\sprites\map\grass.png")
+        if (t == 2):
+            self.img = self.loadImg(r"\resources\sprites\map\rock1.png")
+        if (t == 3):
+            self.img = self.loadImg(r"\resources\sprites\map\stair.png")
+        if (t == 4):
+            self.img = self.loadImg(r"\resources\sprites\map\brigde1.png")
+        if (t == 5):
+            self.img = self.loadImg(r"\resources\sprites\map\cave.png")    
+        if (t == 6):
+            self.img = self.loadImg(r"\resources\sprites\map\stair2.png")
+        if (t == 7):
+            self.img = self.loadImg(r"\resources\sprites\map\water1.png")
+        if (t == 8):
+            self.img = self.loadImg(r"\resources\sprites\map\water.png")
+        if (t == 9):
+            self.img = self.loadImg(r"\resources\sprites\map\rock2.png")
+        if (t == 10):
+            self.img = self.loadImg(r"\resources\sprites\map\water2.png")
+
+

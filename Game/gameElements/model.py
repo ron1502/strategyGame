@@ -26,6 +26,18 @@ class model:
         self.selectedTile = None
         self.tileControlledUnit = None
         self.tileDefendingUnit = None
+        
+        self.database()
+        
+    def database(self):
+        print("Data Base Initialized")
+        with open("database.json") as f:
+            data = json.load(f)
+        
+        for enemy in data["enemies"]:
+            print(enemy)
+        for particle in data["particles"]:
+            print(particle)
 
     def setUpGame(self):
         ## Here Loading can be perform
@@ -82,7 +94,6 @@ class model:
         self.addSprite(self.particles4)
 
 
-
     def setUpMenu(self):
         self.menu = menu()
         self.menuSprites += self.menu.getButtons()
@@ -115,7 +126,6 @@ class model:
                 if(self.player.attacking):
                     enemy.receiveAttack(self.player.attackDamage)
                     #DRAKE: Enemy being attacked
-
                     
     def checkClick(self, x, y):
         if self.stage == "GAME":
