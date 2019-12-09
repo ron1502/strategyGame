@@ -60,9 +60,7 @@ class model:
             particleCenter = self.map.tiles[particle["x"]][particle["y"]].getCenter(70, 70)
             tmpParticle = particles(particleCenter[0], particleCenter[1], 70, 70)
             self.gameSprites.append(tmpParticle)
-        print(len(self.gameSprites))
         self.gameSprites += self.map.floatingTiles
-        print(self.gameSprites[21].img)
             
     def setUpGame(self):
         ## Here Loading can be perform

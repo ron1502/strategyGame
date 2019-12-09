@@ -160,11 +160,18 @@ class tile(sprite):
             tile.TYPE.append(self.loadImg(r"\resources\sprites\map\31.png"))
             tile.TYPE.append(self.loadImg(r"\resources\sprites\map\flower.png"))
 
-
-        self.type = tType
-       # if(self.type == STILLW):  self.img = tile.TYPE[STILLW][0]
         self.img = tile.TYPE[tType]
-        
+        self.type = tType
+
+##    def locateInCenter(self):
+##        self.unit.rect.x = self.rect.x
+##        self.unit.rect.y = self.rect.y
+##        if(self.unit.rect.w <= self.rect.w):
+##            if(self.unit.rect.h <= self.rect.h):
+##                self.unit.rect.x += (self.rect.w - self.unit.rect.w)//2
+##                self.unit.rect.y += (self.rect.h - self.unit.rect.h)//2
+
+
     def getCenter(self, w, h):
         x = self.rect.x + (self.rect.w - w)//2
         y = self.rect.y + (self.rect.h - h)//2
