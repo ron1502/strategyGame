@@ -60,6 +60,9 @@ class model:
             particleCenter = self.map.tiles[particle["x"]][particle["y"]].getCenter(70, 70)
             tmpParticle = particles(particleCenter[0], particleCenter[1], 70, 70)
             self.gameSprites.append(tmpParticle)
+        print(len(self.gameSprites))
+        self.gameSprites += self.map.floatingTiles
+        print(self.gameSprites[21].img)
             
     def setUpGame(self):
         ## Here Loading can be perform
@@ -81,7 +84,7 @@ class model:
     def checkCollision(self):
         #Attacking Enemy
         for tile in self.tiles:
-            if(tile.type >= 4):
+            if(tile.type <= map.COLLIDELIMIT):
                 if(self.player.collide(tile)):
                     self.player.restorePos(self.player.prevRect)
                     playerCenter = self.player.rect.center

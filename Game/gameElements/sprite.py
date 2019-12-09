@@ -76,6 +76,9 @@ class sprite:
 		
 	def draw(self):
 		self.drawImg()
+
+	def update(self):
+                pass
 	
 	def printData(self):
 		print("SpriteData: \nX: " + str(self.rect.x) + "\nY: " + str(self.rect.y) + "\nW:" + str(self.rect.w) + "\nH: " + str(self.rect.h))
