@@ -36,7 +36,7 @@ class map(sprite):
             newRow = []
             for j in range(map.COLUMNCOUNT):
                 xPos = (map.GWIDTH * j)
-                newRow.append(tile(xPos, yPos, map.GWIDTH, map.GHEIGHT, mapData[i][j]))
+                newRow.append(tile(1, xPos, yPos, map.GWIDTH, map.GHEIGHT))
             self.tiles.append(newRow)
         for x in range (15):
             if x== 1:
@@ -304,25 +304,19 @@ class tile(sprite):
 
     TYPE = None
     
-    def __init__(self, x, y, w, h, tType):
-        super().__init__(x, y, w, h)
-        if tile.TYPE == None:
-            tile.TYPE = []
-            stillWater = []
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\Grass0.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\Grass1.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\Grass2.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\bridge.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs0.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs1.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs2.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\stairs3.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\wallWater0.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\wallWater1.png"))
+    def __init__(self, tType, x, y, w, h, imgSource = None):
+        super().__init__(x, y, w, h, imgSource)
         self.type = tType
-       # if(self.type == STILLW):  self.img = tile.TYPE[STILLW][0]
-        self.img = tile.TYPE[tType]
-        
+
+##    def locateInCenter(self):
+##        self.unit.rect.x = self.rect.x
+##        self.unit.rect.y = self.rect.y
+##        if(self.unit.rect.w <= self.rect.w):
+##            if(self.unit.rect.h <= self.rect.h):
+##                self.unit.rect.x += (self.rect.w - self.unit.rect.w)//2
+##                self.unit.rect.y += (self.rect.h - self.unit.rect.h)//2
+
+
     def getCenter(self, w, h):
         x = self.rect.x + (self.rect.w - w)//2
         y = self.rect.y + (self.rect.h - h)//2
