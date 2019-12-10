@@ -78,7 +78,8 @@ class model:
         self.items = self.map.items
 
     def setUpMenu(self):
-        self.menu = menu()
+        self.menu = menu(0, 0, 1050, 700)
+        self.menuSprites.append(self.menu)
         self.menuSprites += self.menu.getButtons()
         self.sprites =  self.menuSprites
         
