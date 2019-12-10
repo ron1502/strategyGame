@@ -28,7 +28,7 @@ class button(sprite):
             # Color for button when it is unclickable
             self.unClickBColor =  pygame.Color(color[0], color[1] - 10, color[2] -10)
 
-        self.rect.h = self.textRect. h * 2 + button.BUTTONMARGIN
+        self.rect.h = self.textRect.h * 2 + button.BUTTONMARGIN
 
         # Locating text in the center of button
         self.textRect.x =  self.rect.x + (self.rect.w - self.textRect.w)//2
