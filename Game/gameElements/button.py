@@ -72,4 +72,3 @@ class button(sprite):
                 self.clickTime += 1
                 if(self.clickTime == 64):
                     self.color = self.regColor
-        

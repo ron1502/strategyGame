@@ -90,7 +90,6 @@ class model:
                     center = tmpTile.getCenter(self.player.rect.w, self.player.rect.h)
                     self.player.moveTo(center[0], center[1])
                     break
-                    
         for enemy in self.enemies:
             if(not enemy.alive):
                 item =  enemy.dropItem()
@@ -139,3 +138,4 @@ class model:
             self.checkCollision()
             for sprite in self.sprites:
                 sprite.update()
+

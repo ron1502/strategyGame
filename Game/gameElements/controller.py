@@ -8,7 +8,7 @@ class controller:
 
     def update(self):
         # Does not allow diagonal movements
-	## If diagonals movements desired, pygamey.key.get_pressed() tuple can be used instead
+    ## If diagonals movements desired, pygamey.key.get_pressed() tuple can be used instead
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.model.quitGame()

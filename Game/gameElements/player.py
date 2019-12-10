@@ -16,6 +16,7 @@ class player(sprite):
         self.skill = skill
         self.xp = xp
         self.prevRect = self.rect.copy()
+
         self.idle = [self.loadImg(r"\resources\sprites\idle\00.png"), self.loadImg(r"\resources\sprites\idle\01.png"),
                      self.loadImg(r"\resources\sprites\idle\02.png"), self.loadImg(r"\resources\sprites\idle\03.png")]
         self.run = []
@@ -49,19 +50,22 @@ class player(sprite):
         distance = destinatination - origin
         moveSpeed = self.speed
         if(not (distance % self.speed == 0)):
-            print("Adding extra ")
             moveSpeed = distance % self.speed
         if(distance > 0):
             return moveSpeed
         else:
             return -moveSpeed
+            
     def heal(self, healingPower):
         self.hp += healingPower
         if(self.hp > PLAYERHP):
+
             self.hp = PLAYERHP
 
     def perfAttack(self):
         if(not self.attacking):
+            self.misssnd = self.loadsnd(r'\resources\sounds\effects\swordmiss.wav')
+            self.misssnd.play()
             self.attacking = True
             self.standing = False
             self.animationCount = 0 
@@ -71,6 +75,8 @@ class player(sprite):
 
     def receiveAttack(self, damage):
         self.hp -= damage
+        self.painsnd = self.loadsnd(r'\resources\sounds\effects\pain.wav')
+        self.painsnd.play()
         if(self.hp <= 0):
             self.alive = False
     
@@ -111,22 +117,3 @@ class player(sprite):
     def draw(self):
         self.drawImg()
         self.lifeBar.draw()
-            
-            
-            
-            
-            
-            
-            
-                
-            
-        
-
-                
-                
-            
-        
-
-
-    
-

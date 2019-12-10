@@ -34,7 +34,3 @@ class particles(sprite):
             elif(self.xD ==  particles.DOWN): self.rect.y += 1
             if(self.animationCount == 55 or self.outOfScreen()):
                 self.shuffleDir()
-
-    
-            
-            

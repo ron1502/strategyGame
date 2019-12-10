@@ -3,7 +3,6 @@ from Game.gameElements.player import player
 
 import pygame
 import random
-white= (255, 255, 255)
 
 class map(sprite):
     COLLIDELIMIT = 18
@@ -24,7 +23,6 @@ class map(sprite):
     FLOATINGT = None
     def __init__(self, mapData):
         super().__init__(0, 0, 0, 0)
-
         if(map.FLOATINGT == None):
             map.FLOATINGT = []
             map.FLOATINGT.append(r"\resources\sprites\map\tree1.png")
@@ -162,14 +160,6 @@ class tile(sprite):
 
         self.img = tile.TYPE[tType]
         self.type = tType
-
-##    def locateInCenter(self):
-##        self.unit.rect.x = self.rect.x
-##        self.unit.rect.y = self.rect.y
-##        if(self.unit.rect.w <= self.rect.w):
-##            if(self.unit.rect.h <= self.rect.h):
-##                self.unit.rect.x += (self.rect.w - self.unit.rect.w)//2
-##                self.unit.rect.y += (self.rect.h - self.unit.rect.h)//2
 
 
     def getCenter(self, w, h):

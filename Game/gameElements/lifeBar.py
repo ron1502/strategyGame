@@ -36,5 +36,3 @@ class lifeBar():
     def draw(self):
         pygame.draw.rect(sprite.screen, self.color, self.rectLife)
         pygame.draw.rect(sprite.screen, BLACK, self.border, 2)
-
-        
