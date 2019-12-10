@@ -41,6 +41,7 @@ class model:
         self.tileControlledUnit = None
         self.tileDefendingUnit = None
         
+        self.gameOver =  False
         
     def loadGame(self):
         with open("resources/map.json") as f:
@@ -141,16 +142,10 @@ class model:
     def quitGame(self):
         self.run = False
 
-    def gameover(self):
-        self.stage = "GAMEOVER"
-        self.run = False
-
     def update(self):
         if(self.stage == "GAME"):
             self.checkCollision()
             for sprite in self.sprites:
-                if (self.player.hp <= 0):
-                    self.gameover()
-                if len(self.enemies) == 0:
-                    self.gameover()
                 sprite.update()
+            if (self.player.hp <= 0 or len(self.enemies) == 0):
+                self.gameOver = True

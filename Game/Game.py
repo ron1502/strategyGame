@@ -16,13 +16,12 @@ class Game:
 		self.view = view(self.model)
 		self.controller = controller(self.model)
 
-
 	def run(self):
 		while self.model.run:
 			self.controller.update()
 			self.model.update()
 			self.view.update()
-			if (self.model.run == False):
+			if (self.model.gameOver == True):
 				self.gameover()
 
 	def draw_text(self, text, size, color, x, y, align="nw"):
@@ -65,8 +64,10 @@ class Game:
                         self.clock.tick(60)
                         for event in pygame.event.get():
                                 if event.type == pygame.QUIT:
+                                        self.model.run = False
                                         waiting = False
                                 if event.type == pygame.KEYUP:
                                         waiting = False
+                                        self.model.run = False
 
 
