@@ -11,6 +11,16 @@ from Game.gameElements.enemy import dragon
 from Game.gameElements.particles import particles
 
 class model:
+    TEXTCOLOR = pygame.Color(255, 255, 255)
+    UTEXTCOLOR = pygame.Color(168, 168, 168)
+    
+    BGCOLOR = pygame.Color(0, 0, 0)
+    WHITE = pygame.Color(255, 255, 255)
+    UBGCOLOR = pygame.Color(70, 66, 50)
+    BUTTONMARGIN = 20
+
+    BCOLORUNACTIVE = pygame.Color(0,0,0, 255)
+
     def __init__(self):
         self.sprites = []
         self.run = True
@@ -26,6 +36,8 @@ class model:
         self.selectedTile = None
         self.tileControlledUnit = None
         self.tileDefendingUnit = None
+
+        self.TEXTSIZE = pygame.font.SysFont('Berlin Sans FB', 20)
 
     def setUpGame(self):
         ## Here Loading can be perform
@@ -94,12 +106,14 @@ class model:
     def removeSprite(self, sprite):
         self.sprites.remove(sprite)
 
+
     def checkCollision(self):
         #Attacking Enemy
         for sprite in self.sprites:
             if(sprite.type == "Wall"):
                 self.player.collide(x, y, True)
-                #DRAKE: Wall sound collision can play here
+                self.collidesnd = self.loadsnd(r'\resources\sounds\effects\hitwall.wav')
+                self.collidesnd.play()
         for enemy in self.enemies:
             if(not enemy.alive):
                 item =  enemy.dropItem()
@@ -111,10 +125,8 @@ class model:
             elif(self.player.collide(enemy) and not enemy.isDying):
                 if(enemy.isAttacking and enemy.hitAgain()):
                     self.player.receiveAttack(enemy.attackDamage)
-                    #DRAKE: Payer being attacked 
                 if(self.player.attacking):
                     enemy.receiveAttack(self.player.attackDamage)
-                    #DRAKE: Enemy being attacked
 
                     
     def checkClick(self, x, y):
@@ -123,7 +135,6 @@ class model:
                 if(item.mouseInIt(x, y)):
                     self.player.heal(item.heallingEffect())
                     self.items.remove(item)
-                    #DRAKE: Healing sound can play here
                     return
 
             tile = self.map.getSelectedTile(x, y)
@@ -143,9 +154,18 @@ class model:
 
     def quitGame(self):
         self.run = False
-        
+
+    def gameover(self):
+        self.stage = "GAMEOVER"
+        self.run = False
+
     def update(self):
         if(self.stage == "GAME"):
             self.checkCollision()
             for sprite in self.sprites:
+                if (self.player.hp <= 0):
+                    self.gameover()
+                if len(self.enemies) == 0:
+                    self.gameover()
                 sprite.update()
+                
