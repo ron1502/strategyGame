@@ -1,5 +1,6 @@
 import json
 import pygame
+import os
 from Game.gameElements.sprite import sprite
 from Game.gameElements.map import map
 from Game.gameElements.button import button
@@ -88,6 +89,11 @@ class model:
     def removeSprite(self, sprite):
         self.sprites.remove(sprite)
 
+    def loadsnd(self, sndpath):
+        # Turns sound path into an absolute path using the current working directory
+        sndpath = os.getcwd() + sndpath
+        snd = pygame.mixer.Sound(sndpath)
+        return snd
 
     def checkCollision(self):
         #Attacking Enemy
@@ -99,6 +105,8 @@ class model:
                     tmpTile = self.map.getTileAt(playerCenter[0], playerCenter[1])
                     center = tmpTile.getCenter(self.player.rect.w, self.player.rect.h)
                     self.player.moveTo(center[0], center[1])
+                    self.collidesnd = self.loadsnd(r'\resources\sounds\effects\hitwall.wav')
+                    self.collidesnd.play()
                     break
         for enemy in self.enemies:
             if(not enemy.alive):
