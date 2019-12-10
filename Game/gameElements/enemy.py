@@ -51,7 +51,6 @@ class enemy(sprite):
             self.isAtticking =  False
             self.dyingsnd = self.loadsnd(r'\resources\sounds\effects\monsterpain.wav')
             self.dyingsnd.play()
-
     def dropItem(self):
         dropPossibility =  random.randint(0, 100)
         if(dropPossibility > 50):
@@ -171,3 +170,4 @@ class worm(enemy):
         self.lifeBar.draw()
         self.drawImg()
         sprite.screen.blit(self.dirt, self.rect)
+

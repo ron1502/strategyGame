@@ -8,13 +8,15 @@ class player(sprite):
     RIGHT = 0
     LEFT = 1
     def __init__(self, x, y, attack, defense, skill, speed, xp, hp = PLAYERHP):
-        super().__init__(x, y, 75, 55)
+        super().__init__(x, y, 60, 44)
         self.hp = hp
         self.attackDamage = attack
         self.defense = defense
         self.speed = speed
         self.skill = skill
         self.xp = xp
+        self.prevRect = self.rect.copy()
+
         self.idle = [self.loadImg(r"\resources\sprites\idle\00.png"), self.loadImg(r"\resources\sprites\idle\01.png"),
                      self.loadImg(r"\resources\sprites\idle\02.png"), self.loadImg(r"\resources\sprites\idle\03.png")]
         self.run = []
@@ -53,12 +55,11 @@ class player(sprite):
             return moveSpeed
         else:
             return -moveSpeed
+            
     def heal(self, healingPower):
         self.hp += healingPower
-        #add sound
         if(self.hp > PLAYERHP):
-            self.healsnd = self.loadsnd(r'\resources\sounds\effects\potion.wav')
-            self.healsnd.play()
+
             self.hp = PLAYERHP
 
     def perfAttack(self):
@@ -81,6 +82,7 @@ class player(sprite):
     
     def update(self):
         if(self.haveToMove()):
+            self.prevRect = self.rect.copy()
             if(pygame.time.get_ticks() - self.lastMove >=  5):
                 xMove = self.move(self.rect.x, self.destX)
                 #Setting directions for updating process
@@ -115,6 +117,3 @@ class player(sprite):
     def draw(self):
         self.drawImg()
         self.lifeBar.draw()
-            
-            
-            

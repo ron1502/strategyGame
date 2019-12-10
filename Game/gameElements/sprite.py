@@ -10,7 +10,7 @@ class sprite:
 	sWidth = 0
 	sHeight = 0
 	
-	def __init__(self, x, y, w, h, sprtPath = None,  type = "NoType", color = None):
+	def __init__(self, x, y, w, h, sprtPath = None,  type = -1, color = None):
 		self.rect = pygame.Rect(x, y, w, h)
 		#------------------------------------------------
 		# RECTANGLE COLOR = GREEN BY DEFAULT
@@ -21,7 +21,7 @@ class sprite:
 		if(sprtPath != None): self.img = self.loadImg(sprtPath)
 		self.animationCount = 0
 		self.lastAnimation = pygame.time.get_ticks()
-		
+
 
 	
 	@staticmethod
@@ -36,20 +36,14 @@ class sprite:
 		sprite.clock = pygame.time.Clock()
 		print("Sprite initialized")
 
-	def collide(self, collideSprite, restorePos = False):
+	def collide(self, collideSprite):
 		# Returns True if collition takes place
-		collide = self.rect.colliderect(collideSprite.rect)
-		if collide and restorePos:
-			if self.xDir == "LEFT":
-				self.rect.x = collideSprite.rect.x + collideSprite.rect.w + 1
-			elif self.xDir == "RIGHT":
-				self.rect.x = collideSprite.rect.x -1 - self.rect.w
-			if self.yDir == "UP":
-				self.rect.y = collideSprite.rect.y + collideSprite.rect.h + 1
-			elif self.yDir == "DOWN":
-				self.rect.y = collideSprite.rect.y - 1 - self.rect.h
-		return collide
-
+		return self.rect.colliderect(collideSprite.rect)
+	
+	def restorePos(self, prevRect):
+                print("Restoring Position")
+                self.rect = prevRect.copy()
+                
 	def loadImg(self, imgPath):
 		# Turns image path into an absolute path using the current working directory
 		# Loads image and rescale using the dimension defined in self.rect
@@ -91,7 +85,9 @@ class sprite:
 		
 	def draw(self):
 		self.drawImg()
+
+	def update(self):
+                pass
 	
 	def printData(self):
 		print("SpriteData: \nX: " + str(self.rect.x) + "\nY: " + str(self.rect.y) + "\nW:" + str(self.rect.w) + "\nH: " + str(self.rect.h))
-																					
