@@ -24,9 +24,6 @@ class Game:
 			self.view.update()
 			if (self.model.run == False):
 				self.gameover()
-			#for event in pygame.event.get():
-             #                   if event.type == pygame.QUIT:
-               #                         sys.exit(0)
 
 	def draw_text(self, text, size, color, x, y, align="nw"):
                 font = pygame.font.SysFont("comicsansms", size)
