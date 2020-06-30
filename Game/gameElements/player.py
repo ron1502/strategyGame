@@ -2,7 +2,7 @@ import pygame
 from Game.gameElements.sprite import sprite
 from Game.gameElements.lifeBar import lifeBar
 
-PLAYERHP = 100 
+PLAYERHP = 100
 
 class player(sprite):
     RIGHT = 0
@@ -17,18 +17,18 @@ class player(sprite):
         self.xp = xp
         self.prevRect = self.rect.copy()
 
-        self.idle = [self.loadImg(r"\resources\sprites\idle\00.png"), self.loadImg(r"\resources\sprites\idle\01.png"),
-                     self.loadImg(r"\resources\sprites\idle\02.png"), self.loadImg(r"\resources\sprites\idle\03.png")]
+        self.idle = [self.loadImg(r"/resources/sprites/idle/00.png"), self.loadImg(r"/resources/sprites/idle/01.png"),
+                     self.loadImg(r"/resources/sprites/idle/02.png"), self.loadImg(r"/resources/sprites/idle/03.png")]
         self.run = []
-        self.run.append([self.loadImg(r"\resources\sprites\run\00.png"), self.loadImg(r"\resources\sprites\run\01.png"),
-                                  self.loadImg(r"\resources\sprites\run\02.png"), self.loadImg(r"\resources\sprites\run\03.png"),
-                                  self.loadImg(r"\resources\sprites\run\04.png"), self.loadImg(r"\resources\sprites\run\05.png")])
-        self.run.append([self.loadImg(r"\resources\sprites\run\L00.png"), self.loadImg(r"\resources\sprites\run\L01.png"),
-                                  self.loadImg(r"\resources\sprites\run\L02.png"), self.loadImg(r"\resources\sprites\run\L03.png"),
-                                  self.loadImg(r"\resources\sprites\run\L04.png"), self.loadImg(r"\resources\sprites\run\L05.png")])
-        self.attack = [self.loadImg(r"\resources\sprites\attack\00.png"), self.loadImg(r"\resources\sprites\attack\01.png"),
-                       self.loadImg(r"\resources\sprites\attack\02.png"), self.loadImg(r"\resources\sprites\attack\03.png"),
-                       self.loadImg(r"\resources\sprites\attack\04.png"), self.loadImg(r"\resources\sprites\attack\05.png")]
+        self.run.append([self.loadImg(r"/resources/sprites/run/00.png"), self.loadImg(r"/resources/sprites/run/01.png"),
+                                  self.loadImg(r"/resources/sprites/run/02.png"), self.loadImg(r"/resources/sprites/run/03.png"),
+                                  self.loadImg(r"/resources/sprites/run/04.png"), self.loadImg(r"/resources/sprites/run/05.png")])
+        self.run.append([self.loadImg(r"/resources/sprites/run/L00.png"), self.loadImg(r"/resources/sprites/run/L01.png"),
+                                  self.loadImg(r"/resources/sprites/run/L02.png"), self.loadImg(r"/resources/sprites/run/L03.png"),
+                                  self.loadImg(r"/resources/sprites/run/L04.png"), self.loadImg(r"/resources/sprites/run/L05.png")])
+        self.attack = [self.loadImg(r"/resources/sprites/attack/00.png"), self.loadImg(r"/resources/sprites/attack/01.png"),
+                       self.loadImg(r"/resources/sprites/attack/02.png"), self.loadImg(r"/resources/sprites/attack/03.png"),
+                       self.loadImg(r"/resources/sprites/attack/04.png"), self.loadImg(r"/resources/sprites/attack/05.png")]
         self.destX = x
         self.destY = y
         self.img = self.idle[0]
@@ -41,6 +41,10 @@ class player(sprite):
         self.alive = False
         self.xDir = "RIGHT"
         self.yDir = "DOWN"
+
+        #Sounds
+        #self.misssnd = self.loadsnd(r'/resources/sounds/effects/swordmiss.wav')
+        #self.painsnd = self.loadsnd(r'/resources/sounds/effects/pain.wav')
 
     def moveTo(self, x, y):
         self.destX = x
@@ -55,7 +59,7 @@ class player(sprite):
             return moveSpeed
         else:
             return -moveSpeed
-            
+
     def heal(self, healingPower):
         self.hp += healingPower
         if(self.hp > PLAYERHP):
@@ -64,22 +68,20 @@ class player(sprite):
 
     def perfAttack(self):
         if(not self.attacking):
-            self.misssnd = self.loadsnd(r'\resources\sounds\effects\swordmiss.wav')
-            self.misssnd.play()
+            #self.misssnd.play()
             self.attacking = True
             self.standing = False
-            self.animationCount = 0 
+            self.animationCount = 0
 
     def haveToMove(self):
         return self.destX != self.rect.x or self.destY != self.rect.y
 
     def receiveAttack(self, damage):
         self.hp -= damage
-        self.painsnd = self.loadsnd(r'\resources\sounds\effects\pain.wav')
-        self.painsnd.play()
+        #self.painsnd.play()
         if(self.hp <= 0):
             self.alive = False
-    
+
     def update(self):
         if(self.haveToMove()):
             self.prevRect = self.rect.copy()

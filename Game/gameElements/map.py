@@ -7,11 +7,11 @@ import random
 class map(sprite):
     COLLIDELIMIT = 18
     GRIDCOLOR = pygame.Color(0, 0, 0)
-    
+
     #Grid dimensions
     GHEIGHT = 70
     GWIDTH = 70
-    
+
     #Number of rows and Columns
     ROWCOUNT = 10
     COLUMNCOUNT = 15
@@ -25,23 +25,23 @@ class map(sprite):
         super().__init__(0, 0, 0, 0)
         if(map.FLOATINGT == None):
             map.FLOATINGT = []
-            map.FLOATINGT.append(r"\resources\sprites\map\tree1.png")
-            map.FLOATINGT.append(r"\resources\sprites\map\1.png")
-            map.FLOATINGT.append(r"\resources\sprites\map\2.png")
-            map.FLOATINGT.append(r"\resources\sprites\map\3.png")
-            map.FLOATINGT.append(r"\resources\sprites\map\4.png")
-            map.FLOATINGT.append(r"\resources\sprites\map\5.png")
-            map.FLOATINGT.append(r"\resources\sprites\map\6.png")
-            map.FLOATINGT.append(r"\resources\sprites\map\7.png")
-            map.FLOATINGT.append(r"\resources\sprites\map\8.png")
+            map.FLOATINGT.append(r"/resources/sprites/map/tree1.png")
+            map.FLOATINGT.append(r"/resources/sprites/map/1.png")
+            map.FLOATINGT.append(r"/resources/sprites/map/2.png")
+            map.FLOATINGT.append(r"/resources/sprites/map/3.png")
+            map.FLOATINGT.append(r"/resources/sprites/map/4.png")
+            map.FLOATINGT.append(r"/resources/sprites/map/5.png")
+            map.FLOATINGT.append(r"/resources/sprites/map/6.png")
+            map.FLOATINGT.append(r"/resources/sprites/map/7.png")
+            map.FLOATINGT.append(r"/resources/sprites/map/8.png")
         self.tiles = []
         self.floatingTiles = []
         self.items = []
         ## Tile initialization (Can be used for the initialization of tiles in from  jsonData)
         # In that case map dimension can be access with no problem through map
-        
+
         for i in range(map.ROWCOUNT):
-            yPos = (map.GHEIGHT * i) 
+            yPos = (map.GHEIGHT * i)
             newRow = []
             for j in range(map.COLUMNCOUNT):
                 xPos = (map.GWIDTH * j)
@@ -74,7 +74,7 @@ class map(sprite):
                 if(tile.type <= map.COLLIDELIMIT and tile.collide(sprite)):
                     return True
         return False
-    
+
     # Gets tile that has been clicked on
     def getSelectedTile(self, x, y):
         for row in self.tiles:
@@ -83,7 +83,6 @@ class map(sprite):
         return None
 
     def getTileAt(self, x, y):
-        print("Grid Coordinates ROW: {" + str(y//map.GHEIGHT) + "} COLUMN: {" + str(x//map.GWIDTH) + "}")
         return self.tiles[y//map.GHEIGHT][x//map.GWIDTH]
 
     def getTiles(self):
@@ -94,7 +93,6 @@ class map(sprite):
 
     def draw(self):
         self.drawTileContent()
-        #self.drawGridLines()
         for item in self.items:
             item.draw()
 
@@ -109,55 +107,54 @@ class tile(sprite):
     MAPLEFTMARGIN = 0
 
     TYPE = None
-    
+
     def __init__(self, x, y, w, h, tType):
         super().__init__(x, y, w, h)
         if tile.TYPE == None:
             tile.TYPE = []
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\rock1.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\rock2.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\21.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\22.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\23.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\cave.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\24.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\water1.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\42.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\26.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\18.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\35.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\water.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\9.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\10.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\11.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\12.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\water2.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\tree2.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\25.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\grass.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\39.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\30.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\35.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\33.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\34.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\27.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\28.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\40.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\13.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\14.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\15.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\16.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\37.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\38.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\36.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\bridge.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\19.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\17.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\20.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\32.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\31.png"))
-            tile.TYPE.append(self.loadImg(r"\resources\sprites\map\flower.png"))
-
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/rock1.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/rock2.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/21.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/22.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/23.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/cave.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/24.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/water1.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/42.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/26.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/18.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/35.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/water.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/9.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/10.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/11.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/12.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/water2.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/tree2.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/25.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/grass.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/39.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/30.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/35.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/33.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/34.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/27.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/28.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/40.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/13.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/14.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/15.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/16.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/37.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/38.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/36.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/bridge.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/19.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/17.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/20.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/32.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/31.png"))
+            tile.TYPE.append(self.loadImg(r"/resources/sprites/map/flower.png"))
         self.img = tile.TYPE[tType]
         self.type = tType
 

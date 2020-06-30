@@ -23,7 +23,7 @@ class enemy(sprite):
         self.hitInterval = hitInterval
         self.lifeBar = lifeBar(self.rect, self.hp)
         self.animationCount = 0
-        
+
         self.isDying =  False
         self.isAttacking =  False
         self.alive =  True
@@ -31,7 +31,9 @@ class enemy(sprite):
         self.lastAttack = pygame.time.get_ticks()
         self.lastHit = pygame.time.get_ticks()
         self.lastDamage = pygame.time.get_ticks()
-        
+        #self.dyingsnd = self.loadsnd(r'/resources/sounds/effects/monsterpain.wav')
+        #self.attacksnd = self.loadsnd(r'/resources/sounds/effects/swordhit.wav')
+
     def hitAgain(self):
         if(pygame.time.get_ticks() - self.lastHit >= self.hitInterval):
             self.lastHit = pygame.time.get_ticks()
@@ -42,15 +44,13 @@ class enemy(sprite):
         if(pygame.time.get_ticks() - self.lastDamage >= PATTACKDURATION):
             self.lastDamage = pygame.time.get_ticks()
             self.hp -= damage
-            self.attacksnd = self.loadsnd(r'\resources\sounds\effects\swordhit.wav')
-            self.attacksnd.play()
+            #self.attacksnd.play()
         if(self.hp <= 0):
             self.animationCount = 0
             self.isDying = True
             self.isIdle = False
             self.isAtticking =  False
-            self.dyingsnd = self.loadsnd(r'\resources\sounds\effects\monsterpain.wav')
-            self.dyingsnd.play()
+            #self.dyingsnd.play()
     def dropItem(self):
         dropPossibility =  random.randint(0, 100)
         if(dropPossibility > 50):
@@ -66,13 +66,13 @@ class dragon(enemy):
     def __init__(self, x, y, w, h, map, attack = DRAGONATTACK):
         super().__init__(x, y, w, h, DRAGONHP, 1000)
         self.walk = []
-        self.walk.append([self.loadImg(r"\resources\sprites\Dragon\walk\L00.png"), self.loadImg(r"\resources\sprites\Dragon\walk\L01.png")])
-        self.walk.append([self.loadImg(r"\resources\sprites\Dragon\walk\00.png"), self.loadImg(r"\resources\sprites\Dragon\walk\01.png")])
+        self.walk.append([self.loadImg(r"/resources/sprites/Dragon/walk/L00.png"), self.loadImg(r"/resources/sprites/Dragon/walk/L01.png")])
+        self.walk.append([self.loadImg(r"/resources/sprites/Dragon/walk/00.png"), self.loadImg(r"/resources/sprites/Dragon/walk/01.png")])
 
         self.attackDamage = attack
         self.attack = []
-        self.attack.append([self.loadImg(r"\resources\sprites\Dragon\attack\L00.png"), self.loadImg(r"\resources\sprites\Dragon\attack\L01.png")])
-        self.attack.append([self.loadImg(r"\resources\sprites\Dragon\attack\00.png"), self.loadImg(r"\resources\sprites\Dragon\attack\01.png")])
+        self.attack.append([self.loadImg(r"/resources/sprites/Dragon/attack/L00.png"), self.loadImg(r"/resources/sprites/Dragon/attack/L01.png")])
+        self.attack.append([self.loadImg(r"/resources/sprites/Dragon/attack/00.png"), self.loadImg(r"/resources/sprites/Dragon/attack/01.png")])
 
         self.isWalking = True
 
@@ -82,11 +82,11 @@ class dragon(enemy):
 
     def isOutofScreen(self):
         return (self.rect.x + self.rect.w >= sprite.sWidth)  or (self.rect.x <= 0)
-    
+
     def update(self):
         self.lifeBar.update(self.rect, self.hp)
         self.lifeBar.update(self.rect, self.hp)
-        if(pygame.time.get_ticks() - self.lastAttack >= 4000):  
+        if(pygame.time.get_ticks() - self.lastAttack >= 4000):
             self.lastAttack = pygame.time.get_ticks()
             self.isAttacking = True
             self.animationCount = -1
@@ -108,27 +108,27 @@ class dragon(enemy):
                     if(pygame.time.get_ticks() - self.lastAttack >= 2000): self.isAttacking = False
                 elif(self.isWalking): self.img = self.walk[self.direction][self.animationCount]
 
-                
+
 
 class worm(enemy):
     def __init__(self, x, y, w, h, attack = WORMATTACK):
         super().__init__(x, y, w, h, WORMHP, 1000)
         self.attackDamage = attack
-        self.idle = [self.loadImg(r"\resources\sprites\worm\idle\00.png"), self.loadImg(r"\resources\sprites\worm\idle\01.png"),
-                     self.loadImg(r"\resources\sprites\worm\idle\02.png"), self.loadImg(r"\resources\sprites\worm\idle\03.png"),
-                     self.loadImg(r"\resources\sprites\worm\idle\04.png"), self.loadImg(r"\resources\sprites\worm\idle\05.png"),
-                     self.loadImg(r"\resources\sprites\worm\idle\06.png"), self.loadImg(r"\resources\sprites\worm\idle\07.png")]
-        self.idleDirt = self.loadImg(r"\resources\sprites\worm\dirt\idle.png");
+        self.idle = [self.loadImg(r"/resources/sprites/worm/idle/00.png"), self.loadImg(r"/resources/sprites/worm/idle/01.png"),
+                     self.loadImg(r"/resources/sprites/worm/idle/02.png"), self.loadImg(r"/resources/sprites/worm/idle/03.png"),
+                     self.loadImg(r"/resources/sprites/worm/idle/04.png"), self.loadImg(r"/resources/sprites/worm/idle/05.png"),
+                     self.loadImg(r"/resources/sprites/worm/idle/06.png"), self.loadImg(r"/resources/sprites/worm/idle/07.png")]
+        self.idleDirt = self.loadImg(r"/resources/sprites/worm/dirt/idle.png");
 
-        self.dying = [self.loadImg(r"\resources\sprites\worm\dying\00.png"), self.loadImg(r"\resources\sprites\worm\dying\01.png"),
-                     self.loadImg(r"\resources\sprites\worm\dying\02.png"), self.loadImg(r"\resources\sprites\worm\dying\03.png"),
-                     self.loadImg(r"\resources\sprites\worm\dying\04.png"), self.loadImg(r"\resources\sprites\worm\dying\05.png")]
+        self.dying = [self.loadImg(r"/resources/sprites/worm/dying/00.png"), self.loadImg(r"/resources/sprites/worm/dying/01.png"),
+                     self.loadImg(r"/resources/sprites/worm/dying/02.png"), self.loadImg(r"/resources/sprites/worm/dying/03.png"),
+                     self.loadImg(r"/resources/sprites/worm/dying/04.png"), self.loadImg(r"/resources/sprites/worm/dying/05.png")]
 
-        self.dyingDirt = [self.loadImg(r"\resources\sprites\worm\dying\d00.png"), self.loadImg(r"\resources\sprites\worm\dying\d01.png"),
-                     self.loadImg(r"\resources\sprites\worm\dying\d02.png"), self.loadImg(r"\resources\sprites\worm\dying\d03.png"),
-                     self.loadImg(r"\resources\sprites\worm\dying\d04.png"), self.loadImg(r"\resources\sprites\worm\dying\d05.png")]
-        self.attack = [self.loadImg(r"\resources\sprites\worm\attacking\00.png"), self.loadImg(r"\resources\sprites\worm\attacking\01.png"),
-                       self.loadImg(r"\resources\sprites\worm\attacking\00.png"), self.loadImg(r"\resources\sprites\worm\attacking\01.png")]
+        self.dyingDirt = [self.loadImg(r"/resources/sprites/worm/dying/d00.png"), self.loadImg(r"/resources/sprites/worm/dying/d01.png"),
+                     self.loadImg(r"/resources/sprites/worm/dying/d02.png"), self.loadImg(r"/resources/sprites/worm/dying/d03.png"),
+                     self.loadImg(r"/resources/sprites/worm/dying/d04.png"), self.loadImg(r"/resources/sprites/worm/dying/d05.png")]
+        self.attack = [self.loadImg(r"/resources/sprites/worm/attacking/00.png"), self.loadImg(r"/resources/sprites/worm/attacking/01.png"),
+                       self.loadImg(r"/resources/sprites/worm/attacking/00.png"), self.loadImg(r"/resources/sprites/worm/attacking/01.png")]
 
         self.dirt = self.idleDirt
         self.hp = WORMHP
@@ -136,10 +136,10 @@ class worm(enemy):
 
         #Tile Data
         #Position in tiles
-        
+
         self.isIdle = True
 
-            
+
     def update(self):
         self.lifeBar.update(self.rect, self.hp)
         if(pygame.time.get_ticks() - self.lastAttack >= 2000 and not self.isDying):
@@ -170,4 +170,3 @@ class worm(enemy):
         self.lifeBar.draw()
         self.drawImg()
         sprite.screen.blit(self.dirt, self.rect)
-

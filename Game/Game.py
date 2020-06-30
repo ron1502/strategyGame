@@ -6,9 +6,10 @@ from pygame import mixer
 import pygame
 import sys
 
-mixer.music.load("lastencounter.wav")
-mixer.music.set_volume(0.25)
-mixer.music.play(-1)
+
+#mixer.music.load("lastencounter.wav")
+#mixer.music.set_volume(0.25)
+#mixer.music.play(-1)
 
 class Game:
 	def __init__(self):
@@ -52,22 +53,20 @@ class Game:
 		pygame.mixer.music.stop()
 		sprite.screen.fill(pygame.Color(0, 0, 0))
 		self.draw_text("GAME OVER", 100, (255, 0, 0), 1050 / 2, 700 / 2, align="center")
-		self.draw_text("Press Any Key to Exit", 75, (255, 255, 255), 1050 / 2, 700 * 3 / 4, align="center")			
+		self.draw_text("Press Any Key to Exit", 75, (255, 255, 255), 1050 / 2, 700 * 3 / 4, align="center")
 		pygame.display.flip()
 		self.waitforkey()
-	
+
 	def waitforkey(self):
 		pygame.event.wait()
 		waiting = True
 		while waiting:
-                        self.clock = pygame.time.Clock()
-                        self.clock.tick(60)
-                        for event in pygame.event.get():
-                                if event.type == pygame.QUIT:
-                                        self.model.run = False
-                                        waiting = False
-                                if event.type == pygame.KEYUP:
-                                        waiting = False
-                                        self.model.run = False
-
-
+			self.clock = pygame.time.Clock()
+			self.clock.tick(60)
+			for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					self.model.run = False
+					waiting = False
+				if event.type == pygame.KEYUP:
+					waiting = False
+					self.model.run = False

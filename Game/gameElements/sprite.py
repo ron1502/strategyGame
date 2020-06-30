@@ -9,7 +9,7 @@ class sprite:
 	clock = None
 	sWidth = 0
 	sHeight = 0
-	
+
 	def __init__(self, x, y, w, h, sprtPath = None,  type = -1, color = None):
 		self.rect = pygame.Rect(x, y, w, h)
 		#------------------------------------------------
@@ -23,7 +23,7 @@ class sprite:
 		self.lastAnimation = pygame.time.get_ticks()
 
 
-	
+
 	@staticmethod
 	def init(width, height, caption):
 		pygame.init()
@@ -39,11 +39,11 @@ class sprite:
 	def collide(self, collideSprite):
 		# Returns True if collition takes place
 		return self.rect.colliderect(collideSprite.rect)
-	
+
 	def restorePos(self, prevRect):
                 print("Restoring Position")
                 self.rect = prevRect.copy()
-                
+
 	def loadImg(self, imgPath):
 		# Turns image path into an absolute path using the current working directory
 		# Loads image and rescale using the dimension defined in self.rect
@@ -59,35 +59,36 @@ class sprite:
 		return snd
 
 	def nextAnimation(self, spriteLimit, animationSpeed):
-                if(pygame.time.get_ticks() - self.lastAnimation >= animationSpeed):
-                        if(self.animationCount == spriteLimit):
-                                self.animationCount = 0
-                        else: self.animationCount += 1
-                        self.lastAnimation = pygame.time.get_ticks()
-                        return True
-                return False
-	
+		if(pygame.time.get_ticks() - self.lastAnimation >= animationSpeed):
+			if(self.animationCount == spriteLimit):
+				self.animationCount = 0
+			else:
+				self.animationCount += 1
+				self.lastAnimation = pygame.time.get_ticks()
+				return True
+		return False
+
 	def getX(self):
 		return self.rect.x
 
 	def mouseInIt(self, x, y):
 		return self.rect.collidepoint(x,y)
-	
+
 	def getY(self):
 		return self.y
 
 	def drawSquare(self, color = None, width = 0):
-		if color == None: color = self.rectColor 
+		if color == None: color = self.rectColor
 		pygame.draw.rect(sprite.screen, color, self.rect, width)
 
 	def drawImg(self):
-		if(self.img != None): sprite.screen.blit(self.img, self.rect)
-		
+		if(self.img != None and self.rect != None): sprite.screen.blit(self.img, self.rect)
+
 	def draw(self):
 		self.drawImg()
 
 	def update(self):
                 pass
-	
+
 	def printData(self):
 		print("SpriteData: \nX: " + str(self.rect.x) + "\nY: " + str(self.rect.y) + "\nW:" + str(self.rect.w) + "\nH: " + str(self.rect.h))

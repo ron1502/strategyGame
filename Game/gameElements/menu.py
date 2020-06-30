@@ -8,9 +8,9 @@ class menu(sprite):
     BLACK = pygame.Color(0,0,0)
     WHITE = pygame.Color(255,255,255)
     DARKGREY = pygame.Color(77, 77, 77)
-    
+
     def __init__(self, x, y, w, h):
-        super().__init__(x, y, w, h, r"\resources\sprites\menu\background.png")
+        super().__init__(x, y, w, h, r"/resources/sprites/menu/background.png")
         self.action = None
         self.gameTitle = pygame.font.SysFont('Berlin Sans FB', 80).render("Monster Hunter", True, menu.WHITE)
         self.titleLocation = self.gameTitle.get_rect()
@@ -22,7 +22,7 @@ class menu(sprite):
     def draw(self):
         self.drawImg()
         sprite.screen.blit(self.gameTitle, self.titleLocation)
-        
+
     def goFunct(self):
         self.action = "G"
 

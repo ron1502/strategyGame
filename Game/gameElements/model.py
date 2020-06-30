@@ -17,7 +17,7 @@ DRAGON = 1
 class model:
     TEXTCOLOR = pygame.Color(255, 255, 255)
     UTEXTCOLOR = pygame.Color(168, 168, 168)
-    
+
     BGCOLOR = pygame.Color(0, 0, 0)
     WHITE = pygame.Color(255, 255, 255)
     UBGCOLOR = pygame.Color(70, 66, 50)
@@ -37,13 +37,14 @@ class model:
 
         self.setUpGame()
         self.setUpMenu()
-        
+
         self.selectedTile = None
         self.tileControlledUnit = None
         self.tileDefendingUnit = None
-        
+
         self.gameOver =  False
-        
+        #self.collidesnd = self.loadsnd(r'/resources/sounds/effects/hitwall.wav')
+
     def loadGame(self):
         with open("resources/map.json") as f:
             data = json.load(f)
@@ -66,13 +67,13 @@ class model:
         playerCenter = self.map.tiles[playerData["x"]][playerData["y"]].getCenter(50, 37)
         self.player = player(playerCenter[0], playerCenter[1], 10, 100, 100, 1, 0)
         self.gameSprites.append(self.player)
-        
+
         for particle in data["particles"]:
             particleCenter = self.map.tiles[particle["x"]][particle["y"]].getCenter(70, 70)
             tmpParticle = particles(particleCenter[0], particleCenter[1], 70, 70)
             self.gameSprites.append(tmpParticle)
         self.gameSprites += self.map.floatingTiles
-            
+
     def setUpGame(self):
         ## Here Loading can be perform
         self.sprites = self.gameSprites
@@ -84,7 +85,7 @@ class model:
         self.menuSprites.append(self.menu)
         self.menuSprites += self.menu.getButtons()
         self.sprites =  self.menuSprites
-        
+
     def addSprite(self, sprite):
         self.sprites.append(sprite)
 
@@ -107,8 +108,7 @@ class model:
                     tmpTile = self.map.getTileAt(playerCenter[0], playerCenter[1])
                     center = tmpTile.getCenter(self.player.rect.w, self.player.rect.h)
                     self.player.moveTo(center[0], center[1])
-                    self.collidesnd = self.loadsnd(r'\resources\sounds\effects\hitwall.wav')
-                    self.collidesnd.play()
+                    #self.collidesnd.play()
                     break
         for enemy in self.enemies:
             if(not enemy.alive):
@@ -123,7 +123,7 @@ class model:
                     self.player.receiveAttack(enemy.attackDamage)
                 if(self.player.attacking):
                     enemy.receiveAttack(self.player.attackDamage)
-                    
+
     def checkClick(self, x, y):
         if self.stage == "GAME":
             for item in self.items:

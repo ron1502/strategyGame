@@ -12,7 +12,7 @@ class particles(sprite):
         if(particles.WHITE == None):
             particles.WHITE = []
             for index in range(0, 56):
-                sprtPath = r"\resources\sprites\particle\white\\" + str(index) + ".png"
+                sprtPath = r"/resources/sprites/particle/white/" + str(index) + ".png"
                 particles.WHITE.append(self.loadImg(sprtPath))
         self.animationCount = random.randint(-1, 55)
         self.shuffleDir()
